@@ -173,13 +173,21 @@ mk_colorfun(Display) ->
     mk_colorfun(Display, Screen).
 
 mk_colorfun(Display, Screen) ->
+	 %%io:format("Screen=~p~n",[Screen]),
     S = lists:nth(Screen + 1, Display#display.screens),
-    D = hd(S#screen.depths),
+	 %%io:format("S=~p~n",[S]),
+    D = hd2(S#screen.depths), 
+	 %%io:format("D=~p~n",[D]),
     V = hd(D#depth.visuals),
+	 %%io:format("V=~p~n",[V]),
     #visual{red_mask=R, green_mask=G, blue_mask=B} = V,
-    %% io:format("R=~p G=~p B=~p~n",[R,G,B]),
+    %%io:format("R=~p G=~p B=~p~n",[R,G,B]),
     mkColorMapFun(R, G, B).
 
+%% Find the first non empty list
+hd2([{_,_,_,[]}|T]) -> hd2(T);
+hd2(Screenlist) -> hd(Screenlist).
+	 
 %% Make a HOF which computes the colors
 
 %%   mkColorMapFun(RMask, GMask, BMask) -> f(I) -> Pixel

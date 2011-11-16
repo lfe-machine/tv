@@ -287,6 +287,7 @@ loop(Client, Driver, Seq, Display, D0, FreeIds) ->
 
 dispatchable_type(expose)          -> true;
 dispatchable_type(buttonPress)     -> true;
+dispatchable_type(buttonRelease)   -> true;
 dispatchable_type(configureNotify) -> true;
 dispatchable_type(enterNotify)     -> true;
 dispatchable_type(leaveNotify)     -> true;

@@ -116,7 +116,7 @@ read(Fname) ->
 
 print() ->
     case filename() of
-	""    -> io:format("No Xauthenticate file~n");
+	""    -> io:format("No .Xauthority file~n");
 	FName -> 
 	    {ok, Cookies} = read(FName), 
 	    print(Cookies)

@@ -86,7 +86,7 @@ start(Display) ->
 		    Error
 	    end;
 	E ->
-	    io:format("cannot read XAuthenticate~n"),
+	    io:format("cannot read .Xauthority~n"),
 	    E
     end.
 

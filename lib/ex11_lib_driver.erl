@@ -119,7 +119,8 @@ loop(Client, Fd, Bin, Max, OB, LO) ->
 handle(Client, <<0:8,_/binary>>= B1) when size(B1) >= 31 ->
     %% error
     {E, Bin1} = split_binary(B1, 32),
-    %% io:format("Error:~p~n",[E]),
+    <<0:8,Error:8,_/binary>> = E,
+    io:format("Xerr:~p~n",[error_to_string(Error)]),
     Client ! pError(E),
     handle(Client, Bin1);
 handle(Client, <<1:8,_/binary>>= B1) when size(B1) >= 31 ->
@@ -164,7 +165,24 @@ send({tcp, Fd}, Bin) ->
 %	    true
 %    end.
 
-
+error_to_string(1) -> request;
+error_to_string(2) -> value;
+error_to_string(3) -> window;
+error_to_string(4) -> pixmap;
+error_to_string(5) -> atom;
+error_to_string(6) -> cursor;
+error_to_string(7) -> font;
+error_to_string(8) -> match;
+error_to_string(9) -> drawable;
+error_to_string(10) -> access;
+error_to_string(11) -> alloc;
+error_to_string(12) -> colormap;
+error_to_string(13) -> gcontext;
+error_to_string(14) -> idchoice;
+error_to_string(15) -> name;
+error_to_string(16) -> length;
+error_to_string(17) -> implementation;
+error_to_string(X) -> X.
 
 
 

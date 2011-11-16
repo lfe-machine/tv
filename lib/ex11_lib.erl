@@ -11,6 +11,7 @@
 %% 2004-02-15 Added initial support for using multiple screens
 %%            Frej Drejhammar <frej@stacken.kth.se>
 
+
 -define(Vsn, "3.1").
 
 -export([colors/0,
@@ -45,6 +46,7 @@
 	 ePolyLine/4,
 	 ePolyText8/5,
 	 ePutImage/9,
+	 eGetImage/5, % returns {Depth, Data}
 	 eSetCloseDownMode/1,
 	 eSetInputFocus/3,
 	 eUnmapWindow/1,
@@ -217,7 +219,8 @@ xCreateSimpleWindow(Display, X, Y, Width, Ht, Cursor, Bg) ->
 		    ?EVENT_EXPOSURE bor 
 		    ?EVENT_STRUCTURE_NOTIFY bor 
 		    ?EVENT_BUTTON_PRESS bor 
-		    ?EVENT_BUTTON1_MOTION},
+                    %?EVENT_BUTTON1_MOTION bor 
+		    ?EVENT_BUTTON_RELEASE},
 		   {backgroundPixmap, 0}, 
 		   {cursor, xCreateCursor(Display,Cursor)},
 		   {borderPixmap,0}]).
@@ -683,6 +686,9 @@ ePutImage(Draw, GC, Width, Ht, X, Y, Pad, Depth, Data) ->
     req(72, 2, <<Draw:32,GC:32,Width:16,Ht:16,X:16,Y:16,Pad:8,Depth:8,
 		0:16,Data/binary>>).
 
+eGetImage(Draw, Width, Ht, X, Y) ->
+    call(73, 2, <<Draw:32,X:16,Y:16,Width:16,Ht:16,255:8,255:8,255:8,255:8>>,eGetImage).
+
 eSetCloseDownMode(Mode) ->
     X = case Mode of
 	    destroy -> 0;
@@ -735,6 +741,9 @@ xSetInputFocus(Window) ->
 call(Op, Bin, Reply) ->
     {call, pack_request(Op, 0, Bin), Reply}.
 
+call(Op, Code, Bin, Reply) ->
+    {call, pack_request(Op, Code, Bin), Reply}.
+
 req(Op, Bin)       -> {cast, pack_request(Op, 0, Bin)}.
 
 req(Op, Code, Bin) -> {cast, pack_request(Op, Code, Bin)}.
@@ -743,6 +752,7 @@ pack_request(Op, Code, Bin) ->
     %% io:format("pack_request Op=~p Code=~p Bin=~p~n",[Op,Code,Bin]),
     Bin1 = pad_bin(Bin),
     Len = (size(Bin1) div 4) + 1,
+	 %io:format("pack_request Op=~p Code=~p Len=~p Bin=~p~n",[Op,Code,Len,Bin]),
     <<Op:8,Code:8,Len:16,Bin1/binary>>.
 
 %% pad_bin(Bin) -> Bin'
@@ -823,7 +833,7 @@ event_name(X) ->
 	16 -> createNotify;
 	17 -> destroyNotify;
 	18 -> unmapNotify;
-        19 -> mapNotify;
+    19 -> mapNotify;
 	20 -> mapRequest;
 	21 -> reparentNotify;
 	22 -> configureNotify;
@@ -1066,6 +1076,8 @@ pReply(Type, Bin) ->
 
 pReply1(eAllocColor, <<_:48,R:16,G:16,B:16,_:16,Pixel:32,_/binary>>) ->
     {R,G,B,Pixel};
+pReply1(eGetImage, <<1,Depth:8,_:240,Data/binary>>) ->
+    {Depth,Data};
 pReply1(eAllocNamedColor, <<_:48,Pixel:32,ER:16,EG:16,EB:16,VR:16,VG:16,VB:16,
 			   _/binary>>) ->
     {Pixel, ER,EG,EB,VR,VG,VB};
@@ -1200,6 +1212,12 @@ eParseEvent(keyPress, <<2:8,KeyCode:8,_:80,Win:32,_:96,State:16,_/binary>>) ->
     %% collating sequence ...
     {Win, {KeyCode,State}};
 eParseEvent(buttonPress,<<4:8,Button:8,
+	    _Seq:16,Time:32,_:32,Event:32,_:32,
+	    RootX:?INT16,RootY:?INT16,
+	    EventX:?INT16,EventY:?INT16,_/binary>>) ->
+    %% pg 71
+    {Event, {Button, EventX, EventY,RootX,RootY}};
+eParseEvent(buttonRelease,<<5:8,Button:8,
 	    _Seq:16,Time:32,_:32,Event:32,_:32,
 	    RootX:?INT16,RootY:?INT16,
 	    EventX:?INT16,EventY:?INT16,_/binary>>) ->

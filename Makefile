@@ -1,6 +1,6 @@
 all:
 	cd lib; make
-	cd unixdom-0.1/src; make
+	#cd unixdom-0.1/src; make
 	cd widgets; make
 
 clean:

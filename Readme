@@ -5,9 +5,42 @@ To help create new widgets there is a small program in util to convert DXF-files
 
 The DXF file can be created in QCAD (free) http://www.ribbonsoft.com/en/ , AUTOCAD and other CAD systems. Entities with higher thickness will be drawn last. Closed polylines will be filled areas.
 
-Compile with:
+
+Install with a fresh Raspbian Jessie Light: (If you already have xserver and erlang installed, skip those steps).
+# Erlang
+sudo apt-get update
+sudo apt-get install wget
+sudo apt-get install libssl-dev
+sudo apt-get install ncurses-dev
+wget http://www.erlang.org/download/otp_src_18.2.1.tar.gz
+tar -xzvf otp_src_18.2.1.tar.gz
+cd otp_src_18.2.1/
+./configure
+make
+sudo make install
+cd ..
+sudo rm -R otp_src_18.2.1/
+
+# xserver
+sudo apt-get install xserver-xorg
+sudo Xorg &
+(press enter and you will get the command prompt back)
+
+# ex11
+sudo apt-get install git
+git clone https://github.com/skvamme/ex11.git
+sudo apt-get install libjpeg8-dev
+xauth
+add :0 . ab12cd34ef56fe78dc90ba1a2b3c4d5e6f
+exit
+cd ex11
+make
+
+
+
+Compile util with:
 erlc -I ../lib *.erl
 
-Start with:
+Start util with:
 erl -noshell -pa '../lib' -s clock init
 

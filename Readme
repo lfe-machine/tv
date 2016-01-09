@@ -3,7 +3,7 @@ Read the documentaion in widgets/ex11.html
 
 To help create new widgets there is a small program in util to convert DXF-files to erlang ex11 drawing primitives. Draw your graphics in a CAD system and save as DXF. Convert the DXF file with dxf2erl:start("clock.dxf"). from the erlang console. There is a sample DXF file in util as well as a demo widget made up from the clock.dxf file.
 
-The DXF file can be created in QCAD (free) http://www.ribbonsoft.com/en/ , AUTOCAD and other CAD systems. Entities with higher thickness will be drawn last.
+The DXF file can be created in QCAD (free) http://www.ribbonsoft.com/en/ , AUTOCAD and other CAD systems. Entities with higher thickness will be drawn last. Closed polylines will be filled areas.
 
 Compile with:
 erlc -I ../lib *.erl

@@ -1,5 +1,4 @@
-
-Read the documentaion in widgets/ex11.html
+This ex11 will be tailored to fit Raspberry Pi. Sometimes you don't need a full fledged window manager when you just want to display a sensor value or a couple of push buttons and a slider.
 
 To help create new widgets there is a small program in util to convert DXF-files to erlang ex11 drawing primitives. Draw your graphics in a CAD system and save as DXF. Convert the DXF file with dxf2erl:start("clock.dxf"). from the erlang console. There is a sample DXF file in util as well as a demo widget made up from the clock.dxf file.
 

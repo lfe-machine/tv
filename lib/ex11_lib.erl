@@ -51,6 +51,8 @@
 	 eSetInputFocus/3,
 	 eUnmapWindow/1,
 	 xSetInputFocus/1,
+	 xSetScreenSaver/2,
+	 eSetScreenSaver/4,
 	 pConnect/2,
 	 pError/1,
 	 pEvent/1,
@@ -310,7 +312,7 @@ xCreateGC(Display, Win, Opts) ->
     add_gc_to_win(Display, {Win, Id}),
     cmd(Display, eCreateGC(Id, Win, Opts)),
     Id.
-
+ 
 xCreateGC(Display, Opts) ->
     Id = new_id(Display),
     %% io:format("creating GC Name=~p Opts=~p~n",[{gc,Name},Opts]),
@@ -730,7 +732,11 @@ eQueryFont(Id) ->
 xSetInputFocus(Window) ->
     eSetInputFocus(none, Window, 0).
 
+xSetScreenSaver(Display,Timeout) -> % Timeout of 0 disables screen saver
+	cmd(Display, eSetScreenSaver(Timeout, 0, 2, 2)). % No interval, default, default
 
+eSetScreenSaver(Timeout, Interval, Prefer_blanking, Allow_exposures) ->
+	req(107, <<Timeout:16,Interval:16,Prefer_blanking:8,Allow_exposures:8,0:16>>).
 
 %%----------------------------------------------------------------------
 %% requests are *allways* a multiple of 4 bytes

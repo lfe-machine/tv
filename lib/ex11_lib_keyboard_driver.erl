@@ -429,7 +429,7 @@ key(16#FFED) -> {cmd, hyper_L};
 key(16#FFEE) -> {cmd, hyper_R};
 
 key(X) ->
-    io:format("Unknown Key=~s~n",[prt(X)]),
+    %io:format("Unknown Key=~s~n",[prt(X)]),
     {unknown, X}.
 
 		

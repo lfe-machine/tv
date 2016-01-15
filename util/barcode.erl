@@ -58,10 +58,10 @@ d_n(Display,Window,Black,[Head|Tail],X) ->
 d_n_n(_,_,_,[],X) -> X;
 d_n_n(Display,Window,Black,[Head|Tail],X) ->
 	X1 = case Head of
-		0 -> xDo(Display,eFillPoly(Window,Black,convex,origin,[mkPoint(X,0),mkPoint(X+2,0),mkPoint(X+2,200),mkPoint(X,200)])), 2;
-		1 -> xDo(Display,eFillPoly(Window,Black,convex,origin,[mkPoint(X,0),mkPoint(X+6,0),mkPoint(X+6,200),mkPoint(X,200)])), 6;
-		2 -> 2;
-		3 -> 6
+		0 -> xDo(Display,eFillPoly(Window,Black,convex,origin,[mkPoint(X,0),mkPoint(X+3,0),mkPoint(X+3,200),mkPoint(X,200)])), 3;
+		1 -> xDo(Display,eFillPoly(Window,Black,convex,origin,[mkPoint(X,0),mkPoint(X+9,0),mkPoint(X+9,200),mkPoint(X,200)])), 9;
+		2 -> 3;
+		3 -> 9
 	end,
 	d_n_n(Display,Window,Black,Tail,X+X1).
 

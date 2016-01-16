@@ -211,8 +211,8 @@ xCreateCursor(Display, CursorId) ->
 	    Id
     end.
 
-xClearArea(Area) ->
-    eClearArea(false,Area,0,0,0,0).
+xClearArea(Window) ->
+    eClearArea(false,Window,0,0,0,0).
 
 xCreateSimpleWindow(Display, X, Y, Width, Ht, Cursor, Bg) ->
     xCreateWindow(Display,top, X, Y, Width, Ht, 1, 0, 0, 
@@ -731,6 +731,8 @@ eQueryFont(Id) ->
 
 xSetInputFocus(Window) ->
     eSetInputFocus(none, Window, 0).
+
+
 
 xSetScreenSaver(Display,Timeout) -> % Timeout of 0 disables screen saver
 	cmd(Display, eSetScreenSaver(Timeout, 0, 2, 2)). % No interval, default, default

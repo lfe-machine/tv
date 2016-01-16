@@ -7,7 +7,6 @@
 
 -module(dxf2erl).
 -author(skvamme).
--vsn("$Id: dxf2erl.erl 94 2009-08-13 21:46:30Z skvamme $").
 -compile(export_all).
 -import(lists, [reverse/1]).
 -import(ets,[lookup/2,insert/2]).
@@ -34,10 +33,10 @@
 %% 081213	Bug in sorting fixed. Changed to sort Thicknes (was Elevation).	S Kvamme
 %% 081215	Added X+ and Y+ to every point coordinate, see definition above.	S Kvamme
 %% 090909	Added support for ASCII DXF								S Kvamme
-
+%% 100117	Bug in entity color fixed (QCAD)							S Kvamme
 
 %****************************************************************************
-% Read a binary dxf file and otput corresponding erlang source for EX11 graphics
+% Read dxf file and otput corresponding erlang source for EX11 graphics
 %****************************************************************************
 start(Dxf) -> % Dxf is "filename.dxf"
 	Etable = ets:new(entity,[duplicate_bag,private]), % Store all the entities in this table
@@ -51,7 +50,7 @@ start(Dxf) -> % Dxf is "filename.dxf"
 			{ok, F} = file:open(Dxf, read),
 			find_entities_ascii(F),
 			io:get_line(F, ''), % get rid of "  0"
-			entities_ascii(F,Etable,io:fread(F,'',"~s"));
+			entities_ascii(F,Etable,trim(io:get_line(F, '')));
 		bin -> io:format("%% Processing binary file: ~p~n",[Dxf]),
 			{ok, B} = file:read_file(Dxf),
 			{_,B1} = split_binary(B, 22),
@@ -60,31 +59,30 @@ start(Dxf) -> % Dxf is "filename.dxf"
 			limits(B2),
 			B3 = find_entities(B2),
 			entities(Etable,B3)
-		end,
-			prints_entities(Etable,Ttable,Arctable),
-			Arclist = ets:lookup(Arctable,arc),
-			print_arclist(Arclist),
-			io:format("%% END~n").
+	end,
+		prints_entities(Etable,Ttable,Arctable),
+		Arclist = ets:lookup(Arctable,arc),
+		print_arclist(Arclist),
+		io:format("%% END~n").
 
 
 %****************************************************************************************
 % Function find_entities_ascii(F1), 
 %****************************************************************************************
-find_entities_ascii(F) ->
-	fea(F,"").
+find_entities_ascii(F) -> fea(F,"").
+
 fea(_F,"ENTITIES") -> ok;
 fea(_F,eof) -> io:format("Didn't find entities section~n",[]),erlang:halt();
-fea(F,_) ->
-	fea(F,trim(io:get_line(F, ''))).
+fea(F,_) -> fea(F,trim(io:get_line(F, ''))).
 	
 %****************************************************************************************
 % Function entities_ascii(Etable,F1)
 %****************************************************************************************
-entities_ascii(_F,_Etable,{ok,["ENDSEC"]}) -> ok; 
+entities_ascii(_F,_Etable,"ENDSEC") -> ok; 
 entities_ascii(_F,_Etable,eof) -> ok;
 entities_ascii(F,Etable,E) ->
 	entity_ascii(F,Etable,E),
-	entities_ascii(F,Etable,io:fread(F,'',"~s")).
+	entities_ascii(F,Etable,trim(io:get_line(F, ''))).
 
 %****************************************************************************************
 % Function entity_ascii(F,Etable,Entity);
@@ -92,42 +90,17 @@ entities_ascii(F,Etable,E) ->
 entity_ascii(F,Etable,E) ->
 	Gtable = ets:new(group,[duplicate_bag,private]),
 	reset_all(Gtable),
-	e_a(F,Etable,Gtable,E, io:fread(F,'',"~s")).
+	e_a(F,Etable,Gtable,E,trim(io:get_line(F, ''))).
 
 e_a(_F,_Etable,_Gtable,_E,eof) -> ok;
-e_a(_F,Etable,Gtable,{ok,[E]},{ok,["0"]}) -> % end of this entity
+e_a(_F,Etable,Gtable,E,"0") -> % end of this entity
 	params(Gtable,Etable,E,'end',0);
-e_a(F,Etable,Gtable,E,{ok,[G]}) ->
+e_a(F,Etable,Gtable,E,G) ->
 	G1 = list_to_integer(G),
-	{ok,[S]} = io:fread(F,'',"~s"),
-	V = format_value(G1,S), 
+	V = format_value(G1,trim(io:get_line(F, ''))), 
 	params(Gtable,Etable,E,V,G1),
-	e_a(F,Etable,Gtable,E, io:fread(F,'',"~s")).
+	e_a(F,Etable,Gtable,E,trim(io:get_line(F, ''))).
 	
-%****************************************************************************************
-% Function format_value(G,io:get_line(F, ''))
-%****************************************************************************************
-format_value(G,S) when G >= 0, G =< 9 -> S; %String
-format_value(G,S) when G >= 10, G =< 59 -> {V,_} = string:to_float(S),V;
-format_value(G,S) when G >= 60, G =< 79 -> list_to_integer(S);
-format_value(G,S) when G >= 90, G =< 99 -> list_to_integer(S);
-format_value(100,S) -> S; %String
-format_value(102,S) -> S; %String
-format_value(105,S) -> S; %String
-format_value(G,S) when G >= 140, G =< 147 -> {V,_} = string:to_float(S),V;
-format_value(G,S) when G >= 170, G =< 175 -> list_to_integer(S);
-format_value(G,S) when G >= 210, G =< 230 -> {V,_} = string:to_float(S),V; % ellipse, ej i standard
-format_value(G,S) when G >= 280, G =< 289 -> list_to_integer(S);
-format_value(G,S) when G >= 300, G =< 369 -> S; %String
-format_value(G,S) when G >= 370, G =< 389 -> list_to_integer(S);
-format_value(G,S) when G >= 390, G =< 399 -> S; %String
-format_value(G,S) when G >= 400, G =< 409 -> list_to_integer(S);
-format_value(G,S) when G >= 410, G =< 419 -> S; %String
-format_value(999,S) -> S; %String
-format_value(G,S) when G >= 1000, G =< 1009 -> S; %String
-format_value(G,S) when G >= 1010, G =< 1059 -> {V,_} = string:to_float(S),V;
-format_value(G,S) when G >= 1060, G =< 1071 -> list_to_integer(S).
-%format_value(G,S) -> io:format("Group: ~p, Value:  ~p~n",[G,S]).
 
 
 %****************************************************************************************
@@ -555,3 +528,30 @@ parse_dxf(<<G1010:?WORD,Rest/binary>>) when G1010 >= 1010, G1010 =< 1059 -> {B,F
 parse_dxf(<<G1060:?WORD,Rest/binary>>) when G1060 >= 1060, G1060 =< 1069 -> {B,F} = ac_word(Rest),{B,F,G1060};
 parse_dxf(<<G1071:?WORD,Rest/binary>>) when G1071 >= 1071, G1071 =< 1079 -> {B,F} = ac_dword(Rest),{B,F,G1071}.
 %parse_dxf(<<G:?WORD,_Rest/binary>>) -> io:format("Missing group: ~w~n",[G]), erlang:halt().
+
+%****************************************************************************************
+% Parse the ASCII dxf file and create erlang data types
+%****************************************************************************************
+format_value(G,S) when G >= 0, G =< 9 -> S; %String
+format_value(G,S) when G >= 10, G =< 59 -> {V,_} = string:to_float(S),V;
+format_value(G,S) when G >= 60, G =< 79 -> list_to_integer(S);
+format_value(G,S) when G >= 90, G =< 99 -> list_to_integer(S);
+format_value(100,S) -> S; %String
+format_value(102,S) -> S; %String
+format_value(105,S) -> S; %String
+format_value(G,S) when G >= 140, G =< 147 -> {V,_} = string:to_float(S),V;
+format_value(G,S) when G >= 170, G =< 175 -> list_to_integer(S);
+format_value(G,S) when G >= 210, G =< 230 -> {V,_} = string:to_float(S),V; % ellipse, ej i standard
+format_value(G,S) when G >= 280, G =< 289 -> list_to_integer(S);
+format_value(G,S) when G >= 300, G =< 369 -> S; %String
+format_value(G,S) when G >= 370, G =< 389 -> list_to_integer(S);
+format_value(G,S) when G >= 390, G =< 399 -> S; %String
+format_value(G,S) when G >= 400, G =< 409 -> list_to_integer(S);
+format_value(G,S) when G >= 410, G =< 419 -> S; %String
+format_value(420,S) -> list_to_integer(S); % QCAD: some value if entity color is other than default
+format_value(999,S) -> S; %String
+format_value(G,S) when G >= 1000, G =< 1009 -> S; %String
+format_value(G,S) when G >= 1010, G =< 1059 -> {V,_} = string:to_float(S),V;
+format_value(G,S) when G >= 1060, G =< 1071 -> list_to_integer(S).
+%format_value(G,S) -> io:format("Group: ~p, Value:  ~p~n",[G,S]).
+

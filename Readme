@@ -24,8 +24,6 @@ sudo rm -R otp_src_18.2.1/
 
 # xserver
 sudo apt-get install xserver-xorg
-sudo Xorg -s 0 dpms &
-(press enter and you will get the command prompt back)
 
 # ex11
 sudo apt-get install git
@@ -38,6 +36,9 @@ exit
 cd ex11
 make
 
+# start Xorg
+sudo Xorg -s 0 dpms &
+(Press enter and you will get the command prompt back. Xorg can be automatically started at boot, Google it up)
 
 
 Compile util with:

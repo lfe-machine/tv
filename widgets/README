@@ -1,0 +1,16 @@
+Compile:
+
+erlc -I ../lib *.erl
+
+
+
+Start Erlang:
+
+erl -pa '../lib'
+
+
+
+In Erlang console, type:
+
+main:start().
+

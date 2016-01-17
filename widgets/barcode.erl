@@ -5,7 +5,7 @@
 -define (HT,200).
 -define (SPACE,2).
 -include("ex11_lib.hrl").
--import(ex11_lib, [xDo/2,xPen/3,xClearArea/1,xFlush/1,xColor/2,eFillPoly/5,xCreateSimpleWindow/10,eMapWindow/1,mkPoint/2,xSetScreenSaver/2]).
+-import(ex11_lib, [xDo/2,xPen/3,xClearArea/2,xFlush/1,xColor/2,eFillPoly/5,xCreateSimpleWindow/10,eMapWindow/1,mkPoint/2,xSetScreenSaver/2]).
 
 % 0 narrow black % 1 wide black % 2 narrow white % 3 wide white
 make(Parent,Display,PWin,X,Y) -> 
@@ -24,7 +24,9 @@ init(_Parent,Display,PWin,X,Y) ->
 
 loop(Display,Window,{Zero,One,Two,Three,Four,Five,Six,Seven,Eight,Nine},Black) ->
     receive
-    	{new,Str} -> Codearray = lists:map(fun(Char) -> case Char of
+    	{new,Str} -> io:format("~p got new number: ~p~n",[?MODULE, Str]),
+    		xClearArea(Display,Window),
+				Codearray = lists:map(fun(Char) -> case Char of
 	    		48 -> Zero;
 	    		49 -> One;
 	    		50 -> Two;
@@ -43,7 +45,6 @@ loop(Display,Window,{Zero,One,Two,Three,Four,Five,Six,Seven,Eight,Nine},Black) -
 	end.
 
 draw_new(Display,Window,Codearray,Black) ->
-	xClearArea(Window),
 	Codearray1 = [[0,3,0,2,1,2,1,2,0]|lists:reverse(Codearray)],
 	Codearray2 = [[0,3,0,2,1,2,1,2,0]|lists:reverse(Codearray1)],
 	d_n(Display,Window,Black,Codearray2,1).
@@ -51,7 +52,6 @@ draw_new(Display,Window,Codearray,Black) ->
 d_n(Display,_,_,[],_) -> xFlush(Display);
 d_n(Display,Window,Black,[Head|Tail],X) ->
 	X1 = d_n_n(Display,Window,Black,Head,X),
-	xFlush(Display),
 	d_n(Display,Window,Black,Tail,X1).
 
 d_n_n(_,_,_,[],X) -> X;
@@ -63,5 +63,13 @@ d_n_n(Display,Window,Black,[Head|Tail],X) ->
 		3 -> 3 * ?SPACE
 	end,
 	d_n_n(Display,Window,Black,Tail,X+X1).
+
+%% T is in milliseconds
+sleep(T) ->
+    receive
+    after T ->
+       true
+    end.
+
 
 

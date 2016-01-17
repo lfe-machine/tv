@@ -17,12 +17,17 @@ init() ->
 	xFlush(Display),
 %	circleslider:make(Pid,Display,Win,100,100),
 	BPid = barcode:make(Pid,Display,Win,20,20),
-	BPid ! {new,"1234567890"},
     dialerbutton:make(Pid, Display,Win,  20, 320,"3"),
     dialerbutton:make(Pid, Display,Win, 180, 320,"4"),
     dialerbutton:make(Pid, Display,Win, 340, 320,"5"),
     dialerbutton:make(Pid, Display,Win, 500, 320,"6"),
     dialerbutton:make(Pid, Display,Win, 660, 320,"7"),
+	sleep(1000),
+	BPid ! {new,"1234567890"},
+	sleep(1000),
+	BPid ! {new,"7654328373"},
+	sleep(1000),
+	BPid ! {new,"0739752839"},
 	loop().
 
 loop() ->
@@ -30,5 +35,13 @@ loop() ->
 		Any -> io:format("~p got unknown msg: ~p~n",[?MODULE, Any]),
 		?MODULE:loop()
 	end.
+
+
+%% T is in milliseconds
+sleep(T) ->
+    receive
+    after T ->
+       true
+    end.
 
 

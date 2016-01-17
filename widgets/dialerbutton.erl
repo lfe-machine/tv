@@ -5,7 +5,7 @@
 -define (HT,120).
 -include("ex11_lib.hrl").
 -import(ex11_lib, [ePutImage/9,eChangeGC/2,xColor/2,xCreateSimpleWindow/10,eGetImage/5,mkArc/6,ePolyArc/3,eMapWindow/1,xDo/2,xFlush/1,eCopyArea/9,xCreateGC/2,
-    ePolyLine/4,mkPoint/2]).
+    ePolyLine/4,mkPoint/2,xClearArea/2]).
 
 make(Parent,Display,PWin,X,Y,Figure) -> 
     spawn_link(?MODULE,init,[Parent,Display,PWin,X,Y,Figure]).
@@ -23,50 +23,59 @@ init(Parent,Display,PWin,X,Y,Figure) ->
     % Red1 = xCreateGC(Display, [{line_width,20},{foreground, xColor(Display, 16#600000)}]),
     % Red2 = xCreateGC(Display, [{line_width,20},{foreground, xColor(Display, 16#700000)}]),
     % Red3 = xCreateGC(Display, [{line_width,20},{foreground, xColor(Display, 16#800000)}]),
-    % Red4 = xCreateGC(Display, [{line_width,20},{foreground, xColor(Display, 16#900000)}]),	
+    Red4 = xCreateGC(Display, [{line_width,20},{foreground, xColor(Display, 16#FFFFFF)}]),	
     Red5 = xCreateGC(Display, [{line_width,20},{foreground, xColor(Display, 16#FFEEEE)}]),
     Red6 = xCreateGC(Display, [{line_width,20},{foreground, xColor(Display, 16#FFDDDD)}]),
     Red7 = xCreateGC(Display, [{line_width,20},{foreground, xColor(Display, 16#FFCCCC)}]),
     Red8 = xCreateGC(Display, [{line_width,20},{foreground, xColor(Display, 16#FFBBBB)}]),
     Red9 = xCreateGC(Display, [{line_width,20},{foreground, xColor(Display, 16#FFAAAA)}]),
     Red10 = xCreateGC(Display, [{line_width,20},{foreground, xColor(Display, 16#FF9999)}]),
-    Redlist = [Red10,Red9,Red8,Red7,Red6,Red5],
+    Redlist = [Red10,Red9,Red8,Red7,Red6,Red5,Red4],
     Bling = lists:reverse([mkArc(0,0,120,120,0,64*360),mkArc(10,10,100,100,0,64*360),mkArc(20,20,80,80,0,64*360),
-            mkArc(30,30,60,60,0,64*360),mkArc(40,40,40,40,0,64*360),mkArc(50,50,20,20,0,64*360)]),
-    eChangeGC(Black,[{plane_mask,16#00000001}]),
-    {ok,Image} = xDo(Display, eGetImage(Win,?WT,?HT,0,0)),
+            mkArc(30,30,60,60,0,64*360),mkArc(40,40,40,40,0,64*360),mkArc(50,50,20,20,0,64*360),mkArc(50,50,20,20,0,64*360)]),
+    %eChangeGC(Black,[{plane_mask,16#00000001}]),
+ %   {ok,Image} = xDo(Display, eGetImage(Win,?WT,?HT,0,0)),
     xFlush(Display),
-    loop(Parent,Display,Win,Image,Bling,Redlist,Black,fun() -> null end,infinity).
+    loop(Parent,Display,Win,Figure,Bling,Redlist,Black,fun() -> null end,infinity).
 
-loop(Parent,Display,Win,Image,Bling,Redlist,Black,F,Delay) ->
+loop(Parent,Display,Win,Figure,Bling,Redlist,Black,F,Delay) ->
     receive
         {event,_, buttonPress, _} ->
             receive
                 {event,_, buttonRelease, _} ->
-                    F1 = fun() -> bling(Display,Win,Image,Bling,Redlist,Black) end,
-		            ?MODULE:loop(Parent,Display,Win,Image,Bling,Redlist,Black,F1,50)
+                    F1 = fun() -> bling(Display,Win,Bling,Redlist,Black,Figure) end,
+		            ?MODULE:loop(Parent,Display,Win,Figure,Bling,Redlist,Black,F1,50)
             after 1000 -> 
-                    F1 = fun() -> bling(Display,Win,Image,Bling,Redlist,Black) end,
-		            ?MODULE:loop(Parent,Display,Win,Image,Bling,Redlist,Black,F1,50)
+                    F1 = fun() -> bling(Display,Win,Bling,Redlist,Black,Figure) end,
+		            ?MODULE:loop(Parent,Display,Win,Figure,Bling,Redlist,Black,F1,50)
             end;
-	{infinity} -> ?MODULE:loop(Parent,Display,Win,Image,Bling,Redlist,Black,F,infinity);
+	{infinity} -> ?MODULE:loop(Parent,Display,Win,Figure,Bling,Redlist,Black,F,infinity);
 	{'EXIT', _Pid, _Why} -> true;
-	_Any -> ?MODULE:loop(Parent,Display, Win,Image,Bling,Redlist,Black,F,Delay)
+	_Any -> ?MODULE:loop(Parent,Display,Win,Figure,Bling,Redlist,Black,F,Delay)
 	after Delay ->
 		F1 = F(),
 		xFlush(Display),
-		?MODULE:loop(Parent,Display, Win,Image,Bling,Redlist,Black,F1,Delay)
+		?MODULE:loop(Parent,Display,Win,Figure,Bling,Redlist,Black,F1,Delay)
    end.
 
 % Draw the Bling in a new colour
-bling(Display,Win,{Depth,Image},[Bling|B],[Red|R],Black) -> 
-    xDo(Display,ePutImage(Win, Black, ?WT, ?HT, 0, 0, 0, Depth, Image)),
+% bling(Display,Win,{Depth,Image},[Bling|B],[Red|R],Black) -> 
+%     xDo(Display,ePutImage(Win, Black, ?WT, ?HT, 0, 0, 0, Depth, Image)),
+%     xDo(Display,ePolyArc(Win,Red,[Bling])),
+%     case B of
+% 	   [] -> self() ! {infinity}, 
+%             xDo(Display,ePutImage(Win, Black, ?WT, ?HT, 0, 0, 0, Depth, Image)),
+%             fun() -> null end;
+% 	   _ -> fun() -> bling(Display,Win,{Depth,Image},B,R,Black) end
+%     end.
+
+bling(Display,Win,[Bling|B],[Red|R],Black,Figure) -> 
+    xClearArea(Display,Win),draw_figure(Display,Win,Black,Figure),
     xDo(Display,ePolyArc(Win,Red,[Bling])),
     case B of
-	   [] -> self() ! {infinity}, 
-            xDo(Display,ePutImage(Win, Black, ?WT, ?HT, 0, 0, 0, 16, Image)),
+       [] -> self() ! {infinity}, draw_figure(Display,Win,Black,Figure),
             fun() -> null end;
-	   _ -> fun() -> bling(Display,Win,{Depth,Image},B,R,Black) end
+       _ -> fun() -> bling(Display,Win,B,R,Black,Figure) end
     end.
 
 

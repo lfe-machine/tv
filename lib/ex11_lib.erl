@@ -60,7 +60,7 @@
 	 sleep/1,
 	 xEnsureFont/2,
 	 xEnsureNamedGC/3,
-	 xClearArea/1,
+	 xClearArea/2,
 	 xColor/2,
 	 xCreateNamedGC/3,
 	 xCreateNamedGC/4,
@@ -211,8 +211,8 @@ xCreateCursor(Display, CursorId) ->
 	    Id
     end.
 
-xClearArea(Window) ->
-    eClearArea(false,Window,0,0,0,0).
+xClearArea(Display,Window) ->
+    cmd(Display,eClearArea(false,Window,0,0,0,0)).
 
 xCreateSimpleWindow(Display, X, Y, Width, Ht, Cursor, Bg) ->
     xCreateWindow(Display,top, X, Y, Width, Ht, 1, 0, 0, 

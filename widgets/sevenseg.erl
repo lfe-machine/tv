@@ -20,7 +20,7 @@ make(Parent,Display,PWin,X,Y) ->
 
 init(Parent,Display,PWin,X,Y) ->
     Win = xCreateSimpleWindow(Display,PWin,X,Y,?WT,?HT,0,?XC_cross,xColor(Display,?black),
-        ?EVENT_BUTTON_PRESS bor ?EVENT_BUTTON_RELEASE), 
+        ?EVENT_BUTTON_PRESS bor ?EVENT_BUTTON_RELEASE bor ?EVENT_STRUCTURE_NOTIFY), 
     xDo(Display, eMapWindow(Win)),
     xFlush(Display),        
     Pen0 = xCreateGC(Display, [{function,copy},{line_width,1},{foreground, xColor(Display, 16#FF0000)}]),  

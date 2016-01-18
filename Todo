@@ -1,14 +1,5 @@
-1) Fix GC's so they are allocated and de_allocated per-window
+1) Add suport for the Render extension (alpha channel etc).
 
-2) Fix hello etc in the lib dir
+2) Add a beter unixdom that can work with Ubuntu XMir (Xmir don't allow port 6000 comms).
 
-3) piff up documentation
-
-4) grep after XXXX for frej's comments
-
-Do I want to open windows on different screens on the same display??
-
-Why should I ever want to do this?
-
-I only ever open things on the default display (as set in the DISPLAY
-variable)
+3) Add smart widgets for embedded systems.

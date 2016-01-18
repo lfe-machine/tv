@@ -1,9 +1,9 @@
 -module(barcode).
 -author(skvamme).
 -export([make/5,init/5,loop/4]).
--define (WT,350).
+-define (WT,400).
 -define (HT,200).
--define (SPACE,2).
+-define (SPACE,2). % width of thin bar. Thick bar is 3 * thin bar (can be 2 to 3)
 -include("ex11_lib.hrl").
 -import(ex11_lib, [xDo/2,xPen/3,xClearArea/2,xFlush/1,xColor/2,eFillPoly/5,xCreateSimpleWindow/10,eMapWindow/1,mkPoint/2,xSetScreenSaver/2]).
 
@@ -13,7 +13,7 @@ make(Parent,Display,PWin,X,Y) ->
 
 init(_Parent,Display,PWin,X,Y) ->
    Window = xCreateSimpleWindow(Display,PWin,X,Y,?WT,?HT,0,?XC_cross,xColor(Display,?white),
-        ?EVENT_EXPOSURE bor ?EVENT_BUTTON_PRESS bor ?EVENT_BUTTON_RELEASE), 
+        ?EVENT_BUTTON_PRESS bor ?EVENT_BUTTON_RELEASE), 
     xDo(Display, eMapWindow(Window)),
     xFlush(Display),
     Black = xPen(Display,0,?black),
@@ -54,7 +54,7 @@ d_n(Display,Window,Black,[Head|Tail],X) ->
 	X1 = d_n_n(Display,Window,Black,Head,X),
 	d_n(Display,Window,Black,Tail,X1).
 
-d_n_n(_,_,_,[],X) -> X;
+d_n_n(_,_,_,[],X) -> X + ?SPACE;
 d_n_n(Display,Window,Black,[Head|Tail],X) ->
 	X1 = case Head of
 		0 -> xDo(Display,eFillPoly(Window,Black,convex,origin,[mkPoint(X,0),mkPoint(X + ?SPACE,0),mkPoint(X + ?SPACE,?HT),mkPoint(X,?HT)])), ?SPACE;
@@ -63,13 +63,6 @@ d_n_n(Display,Window,Black,[Head|Tail],X) ->
 		3 -> 3 * ?SPACE
 	end,
 	d_n_n(Display,Window,Black,Tail,X+X1).
-
-%% T is in milliseconds
-sleep(T) ->
-    receive
-    after T ->
-       true
-    end.
 
 
 

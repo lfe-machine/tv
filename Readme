@@ -47,3 +47,18 @@ erlc -I ../lib *.erl
 Start util with:
 erl -noshell -pa '../lib' -s clock init
 
+
+Compile widgets with:
+erlc -I ../lib *.erl
+
+Start widgets with:
+erl -pa '../lib'
+
+In erlang console, type:
+main:start().
+
+
+Remember you have to have your Xserver running. On Raspberry Pi it's automatically started, or on Raspbian Lite it's sudo Xorg -s 0 dpms & and if you are on a Mac you can use XQuartz (free). Install it and change in Preferences - Security - Allow connections from network clients.
+
+
+

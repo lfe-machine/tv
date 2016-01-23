@@ -31,14 +31,19 @@ sudo rm -R otp_src_18.2.1/
 # xserver
 sudo apt-get install xserver-xorg
 
+
 # ex11
 sudo apt-get install git
 git clone https://github.com/skvamme/ex11.git
 sudo apt-get install libjpeg8-dev
 xauth
 add :0 . ab12cd34ef56fe78dc90ba1a2b3c4d5e6f
-(If there is any chance your system could be hacked, replace at least one of the random characters above)
+#(If there is any chance your system could be hacked, replace at least one of the random characters above)
 exit
+#Add the folling two lines to ~/.profile
+export DISPLAY="localhost:0.0"
+export XAUTHORITY="/home/pi/.Xauthority"
+
 cd ex11
 make
 

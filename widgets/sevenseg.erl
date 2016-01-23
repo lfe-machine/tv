@@ -31,6 +31,9 @@ loop(Parent,Display,Win,Pen0) ->
     receive
     	{new,Fig,Dot} -> xClearArea(Display,Win),
     		do_figure(Fig,Dot,Display,Win,Pen0),xFlush(Display),
+    		xFlush(Display),
+    		?MODULE:loop(Parent,Display,Win,Pen0);
+    	{clear} -> xClearArea(Display,Win),
     		?MODULE:loop(Parent,Display,Win,Pen0);
  		{'EXIT', _Pid, _Why} -> true;
 		_Any -> ?MODULE:loop(Parent,Display,Win,Pen0)
@@ -39,26 +42,27 @@ loop(Parent,Display,Win,Pen0) ->
 
 do_figure(Fig,Dot,Display,Win,Pen0) ->
 	case Fig of
-		0 -> seg_0(Display,Win,Pen0),seg_10(Display,Win,Pen0),seg_20(Display,Win,Pen0),
+		X when X == 0 orelse X == "0" -> seg_0(Display,Win,Pen0),seg_10(Display,Win,Pen0),seg_20(Display,Win,Pen0),
 			seg_40(Display,Win,Pen0),seg_50(Display,Win,Pen0),seg_60(Display,Win,Pen0);
-		1 -> seg_20(Display,Win,Pen0),seg_50(Display,Win,Pen0);
-		2 -> seg_0(Display,Win,Pen0),seg_10(Display,Win,Pen0),seg_30(Display,Win,Pen0),
+		X when X == 1 orelse X == "1" -> seg_20(Display,Win,Pen0),seg_50(Display,Win,Pen0);
+		X when X == 2 orelse X == "2" -> seg_0(Display,Win,Pen0),seg_10(Display,Win,Pen0),seg_30(Display,Win,Pen0),
 			seg_50(Display,Win,Pen0),seg_60(Display,Win,Pen0);
-		3 -> seg_0(Display,Win,Pen0),seg_20(Display,Win,Pen0),seg_30(Display,Win,Pen0),
+		X when X == 3 orelse X == "3" -> seg_0(Display,Win,Pen0),seg_20(Display,Win,Pen0),seg_30(Display,Win,Pen0),
 			seg_50(Display,Win,Pen0),seg_60(Display,Win,Pen0);
-		4 -> seg_20(Display,Win,Pen0),seg_30(Display,Win,Pen0),seg_40(Display,Win,Pen0),
+		X when X == 4 orelse X == "4" -> seg_20(Display,Win,Pen0),seg_30(Display,Win,Pen0),seg_40(Display,Win,Pen0),
 			seg_50(Display,Win,Pen0);
-		5 -> seg_0(Display,Win,Pen0),seg_20(Display,Win,Pen0),seg_30(Display,Win,Pen0),
+		X when X == 5 orelse X == "5" -> seg_0(Display,Win,Pen0),seg_20(Display,Win,Pen0),seg_30(Display,Win,Pen0),
 			seg_40(Display,Win,Pen0),seg_60(Display,Win,Pen0);
-		6 -> seg_0(Display,Win,Pen0),seg_10(Display,Win,Pen0),seg_20(Display,Win,Pen0),
+		X when X == 6 orelse X == "6" -> seg_0(Display,Win,Pen0),seg_10(Display,Win,Pen0),seg_20(Display,Win,Pen0),
 			seg_30(Display,Win,Pen0),seg_40(Display,Win,Pen0),seg_60(Display,Win,Pen0);
-		7 -> seg_20(Display,Win,Pen0),seg_50(Display,Win,Pen0),seg_60(Display,Win,Pen0);
-		8 -> seg_0(Display,Win,Pen0),seg_10(Display,Win,Pen0),seg_20(Display,Win,Pen0),
+		X when X == 7 orelse X == "7" -> seg_20(Display,Win,Pen0),seg_50(Display,Win,Pen0),seg_60(Display,Win,Pen0);
+		X when X == 8 orelse X == "8" -> seg_0(Display,Win,Pen0),seg_10(Display,Win,Pen0),seg_20(Display,Win,Pen0),
 			seg_30(Display,Win,Pen0),seg_40(Display,Win,Pen0),seg_50(Display,Win,Pen0),
 			seg_60(Display,Win,Pen0);
-		9 -> seg_20(Display,Win,Pen0),seg_30(Display,Win,Pen0),seg_40(Display,Win,Pen0),
+		X when X == 9 orelse X == "9" -> seg_20(Display,Win,Pen0),seg_30(Display,Win,Pen0),seg_40(Display,Win,Pen0),
 			seg_50(Display,Win,Pen0),seg_60(Display,Win,Pen0);
-		"-" -> seg_30(Display,Win,Pen0)
+		"-" -> seg_30(Display,Win,Pen0);
+		Any -> io:format("Got: ~p~n",[Any])
 	end,
 	case Dot of
 		true -> seg_dot(Display,Win,Pen0);

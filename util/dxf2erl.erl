@@ -1,4 +1,4 @@
-%% Copyright (C) 2009 by S Kvamme
+%% Copyright (C) 2008 by S Kvamme
 %% All rights reserved.
 %% The copyright holder hereby grants the rights of usage, distribution
 %% and modification of this software to everyone and for any purpose, as
@@ -214,10 +214,11 @@ doPoly(Ttable,1,_Flags,Bulge,_Bulge1,Pen,X1,Y1) when Bulge /= 0 -> % This is Fir
 	insert(Ttable,{firstvertex,0}),
 	io:format("xDo(Display,ePolyFillArc(Win, Pen~p, [",[Pen]);
 doPoly(Ttable,1,1,0,_,Pen,X1,Y1) -> % This is FirstVertex of a closed pline
-	io:format("xDo(Display,eFillPoly(Win, Pen~B, complex, origin, [mkPoint(" ++ ?DX ++ "~B," ++ ?DY ++"~B),~n",[Pen,round(X1),round(Y1)]),
+	io:format("xDo(Display,eFillPoly(Win, Pen~B, complex, origin, [mkPoint(" ++ ?DX ++ "~B," ++ ?DY ++"~B)~n",[Pen,round(X1),round(Y1)]),
+		io:format("Hej Pline~n"),
 	insert(Ttable,{firstvertex,0});
 doPoly(Ttable,1,_,0,_,Pen,X1,Y1) -> % This is FirstVertex of an open pline
-	io:format("xDo(Display,ePolyLine(Win, Pen~B, origin, [mkPoint(" ++ ?DX ++ "~B," ++ ?DY ++ "~B),~n",[Pen,round(X1),round(Y1)]),	
+	io:format("xDo(Display,ePolyLine(Win, Pen~B, origin, [mkPoint(" ++ ?DX ++ "~B," ++ ?DY ++ "~B)~n",[Pen,round(X1),round(Y1)]),	
 	insert(Ttable,{firstvertex,0});
 doPoly(Ttable,0,_,_,B2,Pen,X1,Y1) when B2 > 0 -> % This is SecondVertex of an Arc
 	[{_,X2}|_] = lookup(Ttable, 10), 
@@ -245,7 +246,7 @@ doPoly(Ttable,0,_,_,B2,Pen,X1,Y1) when B2 > 0 -> % This is SecondVertex of an Ar
 	io:format("xDo(Display,~s(Win, Pen~B, [mkArc(" ++ ?DX ++ "~B," ++ ?DY ++ "~B,~B,~B,~B,~B)])),~n",
 	  [Method,Pen,round(Xbbox),round(Ybbox),round(Rad*2),round(Rad*2),round(64*StAng1),round(64*Ang1)]); 
 doPoly(_Ttable,0,_,_,_,_Pen,X1,Y1) -> % This is a vertex of a pline
-	io:format("mkPoint(" ++ ?DX ++ "~B," ++ ?DY ++ "~B),~n",[round(X1),round(Y1)]).
+	io:format(", mkPoint(" ++ ?DX ++ "~B," ++ ?DY ++ "~B)~n",[round(X1),round(Y1)]).
 
 
 %****************************************************************************
@@ -270,14 +271,15 @@ tryArc(Pen,Closed,[{10,X1}|[{10,X2}|_]],[{20,Y1}|[{20,Y2}|_]],[{42,B1}|_],Arctab
 	Ang1 = angle(B1,Ang), % same as PostScript arcn if bulge is negative
 	Xbbox = Xcen - Rad, Ybbox = Ycen - Rad,
 	insert(Arctable,{arc, io_lib:format("xDo(Display,~s(Win, Pen~B, [mkArc(" ++ ?DX ++ "~B," ++ ?DY++ "~B,~B,~B,~B,~B)])),~n",
-	  [closeArc(Closed),Pen,round(Xbbox),round(Ybbox),round(Rad*2),round(Rad*2),round(64*StAng1),round(64*Ang1)])}); 
-tryArc(_Pen,_Closed,[{10,X1}|_],[{20,Y1}|_],_,_) -> io:format("mkPoint(" ++ ?DX ++ "~B," ++ ?DY ++ "~B),~n",[round(X1),round(Y1)]).
+	  [closeArc(Closed),Pen,round(Xbbox),round(Ybbox),round(Rad*2),round(Rad*2),round(64*StAng1),round(64*Ang1)])});
 
-firstVertex(1,1,Pen) ->
-	io:format("xDo(Display,eFillPoly(Win, Pen~B, complex, origin, [",[Pen]);
-firstVertex(1,0,Pen) ->
-	io:format("xDo(Display,ePolyLine(Win, Pen~B, origin, [",[Pen]);	
-firstVertex(0,_,_) -> ok.
+tryArc(_Pen,_Closed,[{10,X1}|_],[{20,Y1}|_],_,_) -> io:format(",~nmkPoint(" ++ ?DX ++ "~B," ++ ?DY ++ "~B)",[round(X1),round(Y1)]).
+
+firstVertex(1,1,Pen,{10,X1},{20,Y1}) ->
+	io:format("xDo(Display,eFillPoly(Win, Pen~B, complex, origin, [mkPoint(" ++ ?DX ++ "~B," ++ ?DY ++"~B)",[Pen,round(X1),round(Y1)]);
+firstVertex(1,0,Pen,{10,X1},{20,Y1}) ->
+	io:format("xDo(Display,ePolyLine(Win, Pen~B, origin, [mkPoint(" ++ ?DX ++ "~B," ++ ?DY ++"~B)",[Pen,round(X1),round(Y1)]);
+firstVertex(0,_,_,_,_) -> ok.
 
 closeArc(1) -> "ePolyFillArc";
 closeArc(_) -> "ePolyArc".
@@ -287,7 +289,7 @@ closeArc(_) -> "ePolyArc".
 %****************************************************************************
 doLWPoly(_Pen,_Closed,_FirstVertex,[],[],[],_) -> io:format("])),~n",[]);
 doLWPoly(Pen,Closed,FirstVertex,G42list,G10list,G20list,Arctable) ->	
-	firstVertex(FirstVertex,Closed,Pen),
+	firstVertex(FirstVertex,Closed,Pen,hd(G10list),hd(G20list)),
 	tryArc(Pen,Closed,G10list,G20list,G42list,Arctable),
 	[_|G42tail] = G42list,[_|G10tail] = G10list,[_|G20tail] = G20list,
 	doLWPoly(Pen,Closed,0,G42tail,G10tail,G20tail,Arctable).
@@ -331,7 +333,7 @@ print_entity({_,"ARC",Entity},_,_) ->
 	io:format("xDo(Display,ePolyArc(Win, Pen~B, [mkArc(" ++ ?DX ++ "~B," ++ ?DY ++ "~B,~B,~B,~B,~B)])),~n",
 	  [Pen,round(X1 - Radius),round(Y1 - Radius),round(Radius*2),round(Radius*2),
 	  	round(fixang1(Startangle)*64),round(fixang1(Endangle2)*64)]);
-print_entity({_,"ELLIPSE",Entity},_,_) -> %% dxf2erl:start(dialer_slider_menu.dxf).
+print_entity({_,"ELLIPSE",Entity},_,_) -> 
 	[{_,X1}|_] = lookup(Entity, 10),[{_,Y1}|_] = lookup(Entity, 20),
 	[{_,RadiusX}|_] = lookup(Entity, 11),
 	[{_,RadiusY}|_] = lookup(Entity, 21),

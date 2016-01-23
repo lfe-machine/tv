@@ -1,6 +1,6 @@
 -module(main). 
 -author(skvamme).
--export([start/0,init/0,loop/4]).
+-export([start/0,init/0,loop/6]).
 -import(ex11_lib,[xColor/2,xCreateSimpleWindow/7,eMapWindow/1,xDo/2,xFlush/1,xSetScreenSaver/2]).
 -include("ex11_lib.hrl").
 -define(WT,800).
@@ -12,54 +12,52 @@ init() ->
 	Pid = self(),
 	{ok, Display} = ex11_lib:xStart("3.1"),
     xSetScreenSaver(Display,0),
-	Win = xCreateSimpleWindow(Display,0,0,?WT,?HT,?XC_arrow,xColor(Display,?white)),
+	Win = xCreateSimpleWindow(Display,0,0,?WT,?HT,?XC_arrow,xColor(Display,?black)),
 	xDo(Display, eMapWindow(Win)),
 	xFlush(Display),
-	loop(Pid,Display,Win,false).
+	Port = open_port({spawn, "../priv/atlast -i../priv/kwh.atl"}, [{line,127}]),
+	loop(Pid,Port,Display,Win,false,{null,null,nul,null}).
 
-loop(Pid,Display,Win,Ready) ->
+loop(Pid,Port,Display,Win,Ready,Widgets) ->
     receive
-    	{event,_,configureNotify,_} when Ready == false ->
-		%	circleslider:make(Pid,Display,Win,100,100),
-			BPid = barcode:make(Pid,Display,Win,20,20),
-			Seg = sevenseg:make(Pid,Display,Win,500,20),
-		    dialerbutton:make(Pid, Display,Win,  20, 320,"3"),
-		    dialerbutton:make(Pid, Display,Win, 180, 320,"4"),
-		    dialerbutton:make(Pid, Display,Win, 340, 320,"5"),
-		    dialerbutton:make(Pid, Display,Win, 500, 320,"6"),
-		    dialerbutton:make(Pid, Display,Win, 660, 320,"7"),
-			sleep(1000),
-			BPid ! {new,"1234567890"},
-			Seg ! {new,0,true},
-			sleep(1000),
-			Seg ! {new,1,true},
-			sleep(1000),
-			Seg ! {new,2,true},
-			sleep(1000),
-			Seg ! {new,3,true},
-			sleep(1000),
-			Seg ! {new,4,true},
-			sleep(1000),
-			Seg ! {new,5,true},
-			sleep(1000),
-			Seg ! {new,6,true},
-			sleep(1000),
-			Seg ! {new,7,true},
-			sleep(1000),
-			Seg ! {new,8,true},
-			sleep(1000),
-			Seg ! {new,9,true},
-		    ?MODULE:loop(Pid,Display,Win,true);
+    	{event,_,configureNotify,_} when Ready == false -> % The window is ready for use
+			Digit1000 = sevenseg:make(Pid,Display,Win,20,20), % Place the four sevensegments
+			Digit100 = sevenseg:make(Pid,Display,Win,100,20),
+			Digit10 = sevenseg:make(Pid,Display,Win,180,20),
+			Digit1 = sevenseg:make(Pid,Display,Win,260,20),
+			show_off(9999,Digit1000,Digit100,Digit10,Digit1),
+			timer:send_interval(5000, poll),
+		    ?MODULE:loop(Pid,Port,Display,Win,true,{Digit1000,Digit100,Digit10,Digit1});
+		poll -> poll -> Port ! {self(), {command, "w\n"}},
+			 ?MODULE:loop(Pid,Port,Display,Win,Ready,Widgets);
+		{Port,{data,{eol,Data1}}} ->	                        % Data from ATLAST Forth
+			{Digit1000,Digit100,Digit10,Digit1} = Widgets,
+			show_off(Data1,Digit1000,Digit100,Digit10,Digit1),
+			?MODULE:loop(Pid,Port,Display,Win,Ready,Widgets);
 		Any -> io:format("~p got unknown msg: ~p~n",[?MODULE, Any]),
-			?MODULE:loop(Pid,Display,Win,Ready)
+			?MODULE:loop(Pid,Port,Display,Win,Ready,Widgets)
+	end.
+
+show_off(Number,Digit1000,Digit100,Digit10,Digit1) ->
+	Ilist = string:strip(Number),
+	io:format("~p Ilist is: ~p~n",[?MODULE, Ilist]),
+	case Ilist of
+		[A] -> Digit1 ! {new,[A],false}, Digit1000 ! Digit100 ! Digit10 ! {clear};
+		[A,B] -> Digit10 ! {new,[A],false}, Digit1 ! {new,[B],false}, Digit1000 ! Digit100 ! {clear};
+		[A,B,C] -> Digit100 ! {new,[A],false}, Digit10 ! {new,[B],false}, Digit1 ! {new,[C],false}, Digit1000 ! {clear};
+		[A,B,C,D] -> Digit1000 ! {new,[A],false}, Digit100 ! {new,[B],false}, Digit10 ! {new,[C],false}, Digit1 ! {new,[D],false}
 	end.
 
 
-%% T is in milliseconds
-sleep(T) ->
-    receive
-    after T ->
-       true
-    end.
+
+
+
+
+
+
+
+
+
+
 
 

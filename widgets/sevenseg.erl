@@ -30,10 +30,11 @@ init(Parent,Display,PWin,X,Y) ->
 loop(Parent,Display,Win,Pen0) ->
     receive
     	{new,Fig,Dot} -> xClearArea(Display,Win),
-    		do_figure(Fig,Dot,Display,Win,Pen0),xFlush(Display),
+    		do_figure(Fig,Dot,Display,Win,Pen0),
     		xFlush(Display),
     		?MODULE:loop(Parent,Display,Win,Pen0);
     	{clear} -> xClearArea(Display,Win),
+    		xFlush(Display),
     		?MODULE:loop(Parent,Display,Win,Pen0);
  		{'EXIT', _Pid, _Why} -> true;
 		_Any -> ?MODULE:loop(Parent,Display,Win,Pen0)

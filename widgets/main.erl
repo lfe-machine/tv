@@ -16,16 +16,16 @@ init() ->
 	xDo(Display, eMapWindow(Win)),
 	xFlush(Display),
 	Port = open_port({spawn, "../priv/atlast -i../priv/kwh.atl"}, [{line,127}]),
-	loop(Pid,Port,Display,Win,false,{null,null,nul,null,null}).
+	loop(Pid,Port,Display,Win,false,{null,null,null,null,null}).
 
 loop(Pid,Port,Display,Win,Ready,Widgets) ->
     receive
     	{event,_,expose,expose} when Ready == false -> % The window is ready for use
-			Digit10000 = sevenseg:make(Pid,Display,Win,20,20), % Place the four sevensegments
-			Digit1000 = sevenseg:make(Pid,Display,Win,100,20), % Place the four sevensegments
-			Digit100 = sevenseg:make(Pid,Display,Win,180,20),
-			Digit10 = sevenseg:make(Pid,Display,Win,260,20),
-			Digit1 = sevenseg:make(Pid,Display,Win,340,20),
+			Digit10000 = sevensegsmall:make(Pid,Display,Win,20,20), % Place the sevensegments
+			Digit1000 = sevensegsmall:make(Pid,Display,Win,100,20), 
+			Digit100 = sevensegsmall:make(Pid,Display,Win,180,20),
+			Digit10 = sevensegsmall:make(Pid,Display,Win,260,20),
+			Digit1 = sevensegsmall:make(Pid,Display,Win,340,20),
 			Widgets1 = {Digit10000,Digit1000,Digit100,Digit10,Digit1},
 			show_off("88888",Widgets1),
 			timer:send_interval(5000, poll),

@@ -1,8 +1,8 @@
 -module(sevensegsmall).
 -author(skvamme).
 -export([make/5,init/5,loop/4]).
--define (WT,80).
--define (HT,120).
+-define (WT,40).
+-define (HT,60).
 -include("ex11_lib.hrl").
 -import(ex11_lib, [xColor/2,xCreateSimpleWindow/10,xClearArea/2,mkArc/6,eFillPoly/5,ePolyFillArc/3,eMapWindow/1,xDo/2,xFlush/1,xCreateGC/2,
     ePolyLine/4,mkPoint/2,xClearArea/2]).

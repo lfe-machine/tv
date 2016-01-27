@@ -1,6 +1,6 @@
 -module(main). 
 -author(skvamme).
--export([start/0,init/0,loop/6]).
+-export([start/0,init/0,loop/7]).
 -import(ex11_lib,[xColor/2,xCreateSimpleWindow/7,eMapWindow/1,xDo/2,xFlush/1,xSetScreenSaver/2]).
 -include("ex11_lib.hrl").
 -define(WT,800).
@@ -16,12 +16,12 @@ init() ->
 	xDo(Display, eMapWindow(Win)),
 	xFlush(Display),
 	Port = open_port({spawn, "../priv/atlast -i../priv/kwh.atl"}, [{line,127}]),
-	loop(Pid,Port,Display,Win,false,{null,null,null,null,null}).
+	loop(Pid,Port,Display,Win,false,{null,null,null,null,null},null).
 
-loop(Pid,Port,Display,Win,Ready,Widgets) ->
+loop(Pid,Port,Display,Win,Ready,Widgets,Graph) ->
     receive
     	{event,_,expose,expose} when Ready == false -> % The window is ready for use
-			_Graph = graph:make(Pid,Display,Win,0,0), % Place the graph
+			Graph1 = graph:make(Pid,Display,Win,0,0), % Place the graph
 			Digit10000 = sevensegsmall:make(Pid,Display,Win,180,20), % Place the sevensegments
 			Digit1000 = sevensegsmall:make(Pid,Display,Win,220,20), 
 			Digit100 = sevensegsmall:make(Pid,Display,Win,260,20),
@@ -30,15 +30,16 @@ loop(Pid,Port,Display,Win,Ready,Widgets) ->
 			Widgets1 = {Digit10000,Digit1000,Digit100,Digit10,Digit1},
 			show_off("88888",Widgets1),
 			timer:send_interval(5000, poll),
-		    ?MODULE:loop(Pid,Port,Display,Win,true,Widgets1);
+		    ?MODULE:loop(Pid,Port,Display,Win,true,Widgets1,Graph1);
 		poll when is_port(Port) -> Port ! {self(), {command, "w\n"}},
-			 ?MODULE:loop(Pid,Port,Display,Win,Ready,Widgets);
-		{Port,{data,{eol,Data1}}} when Data1 /= [] ->	              % Data from ATLAST Forth
-			show_off(Data1,Widgets),
+			 ?MODULE:loop(Pid,Port,Display,Win,Ready,Widgets,Graph);
+		{Port,{data,{eol,Data}}} when Data /= [] andalso length(Data) < 6 ->
+			Graph ! {new,Data},
+			show_off(Data,Widgets),
 			xFlush(Display),
-			?MODULE:loop(Pid,Port,Display,Win,Ready,Widgets);
+			?MODULE:loop(Pid,Port,Display,Win,Ready,Widgets,Graph);
 		Any -> io:format("~p got unknown msg: ~p~n",[?MODULE, Any]),
-			?MODULE:loop(Pid,Port,Display,Win,Ready,Widgets)
+			?MODULE:loop(Pid,Port,Display,Win,Ready,Widgets,Graph)
 	end.
 
 show_off(Number,{Digit10000,Digit1000,Digit100,Digit10,Digit1}) ->

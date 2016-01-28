@@ -3,6 +3,8 @@
 -export([make/5,init/5,loop/5]).
 -define (WT,800).
 -define (HT,480).
+-define (DELTA,10). % X-Distance between visible points
+-define (COUNT,60). % Max Number of visible points
 -include("ex11_lib.hrl").
 -import(ex11_lib, [xColor/2,xCreateSimpleWindow/10,xClearArea/2,mkArc/6,eFillPoly/5,ePolyFillArc/3,eMapWindow/1,xDo/2,xFlush/1,xCreateGC/2,
     ePolyLine/4,mkPoint/2,xClearArea/2]).
@@ -52,7 +54,7 @@ loop(Parent,Display,Win,Pen,Data) ->
     receive
         {new,D} ->
             Data2 = case length(Data) of
-                L when L < 60 -> [D|Data];
+                L when L < ?COUNT -> [D|Data];
                 _ -> Data1 = lists:reverse(tl(lists:reverse(Data))), [D|Data1]
             end,
             {Pen0,Pen1} = Pen,
@@ -85,7 +87,7 @@ xDo(Display,ePolyLine(Win, Pen0, origin, [mkPoint(80,41),mkPoint(120,41)])).
 
 draw_dynamic(Display,Win,Pen0,Data) ->
     Data1 = lists:reverse(Data),
-    Points = lists:map(fun(D) -> X = get(x), X1 = X + 10, put(x,X1), D1 = list_to_integer(string:strip(D)) div 20, mkPoint(X,480 - D1) end, Data1),
+    Points = lists:map(fun(D) -> X = get(x), X1 = X + ?DELTA, put(x,X1), D1 = list_to_integer(string:strip(D)) div 20, mkPoint(X,?HT - D1) end, Data1),
     xDo(Display,ePolyLine(Win, Pen0, origin, Points)),
     xFlush(Display),
     put(x,120).

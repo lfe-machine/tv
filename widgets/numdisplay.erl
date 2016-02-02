@@ -30,7 +30,9 @@ loop(Parent,Display,Win,Widgets) ->
     	{new,Number} -> 
             show_off(Number,Widgets),
     		?MODULE:loop(Parent,Display,Win,Widgets);
-    	{clear} -> 
+    	{clear} ->
+            {Digit10000,Digit1000,Digit100,Digit10,Digit1} = Widgets,
+            Digit10000 ! Digit1000 ! Digit100 ! Digit10 ! Digit1 ! {clear},
     		?MODULE:loop(Parent,Display,Win,Widgets);
  		{'EXIT', _Pid, _Why} -> true;
 		_Any -> ?MODULE:loop(Parent,Display,Win,Widgets)

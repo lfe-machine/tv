@@ -53,6 +53,7 @@ sudo Xorg -s 0 dpms &
 
 
 Compile util with:
+cd util
 erlc -I ../lib *.erl
 
 Start util with:
@@ -60,6 +61,7 @@ erl -noshell -pa '../lib' -s clock init
 
 
 Compile widgets with:
+cd widgets
 erlc -I ../lib *.erl
 
 Start widgets with:

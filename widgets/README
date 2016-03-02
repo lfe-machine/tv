@@ -6,7 +6,7 @@ erlc -I ../lib *.erl
 
 Start Erlang:
 
-erl -pa '../lib'
+sudo erl -pa '../lib'
 
 
 

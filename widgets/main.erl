@@ -15,7 +15,8 @@ init() ->
 	Win = xCreateSimpleWindow(Display,0,0,?WT,?HT,?XC_arrow,xColor(Display,?black)),
 	xDo(Display, eMapWindow(Win)),
 	xFlush(Display),
-	Port = open_port({spawn, "../priv/atlast -i../priv/kwh.atl"}, [{line,127}]),
+	%Port = open_port({spawn, "../priv/atlast -i../priv/kwh.atl"}, [{line,127}]),
+	Port = undefined, % No port installed
 	loop(Pid,Port,Display,Win,false,undefined,undefined).
 
 loop(Pid,Port,Display,Win,Ready,Graph,Num) ->
@@ -23,7 +24,7 @@ loop(Pid,Port,Display,Win,Ready,Graph,Num) ->
     	{event,_,expose,expose} when Ready == false -> % The window is ready for use
 			Graph1 = graph:make(Pid,Display,Win,0,0), % Place the graph
 			Num1 = numdisplay:make(Pid,Display,Win,200,20), % Place the numeric real time display
-			cartoon:make(Pid,Display,Win,200,100),
+			dialerbutton:make(Pid,Display,Win,200,100,"5"),
 			timer:send_interval(5000, poll),
 		    ?MODULE:loop(Pid,Port,Display,Win,true,Graph1,Num1);
 		poll when is_port(Port) -> Port ! {self(), {command, "w\n"}},

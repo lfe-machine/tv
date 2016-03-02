@@ -65,7 +65,7 @@ cd widgets
 erlc -I ../lib *.erl
 
 Start widgets with:
-erl -pa '../lib'
+sudo erl -pa '../lib'
 
 In erlang console, type:
 main:start().

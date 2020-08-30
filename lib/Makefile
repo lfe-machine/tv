@@ -1,7 +1,7 @@
 CC = gcc
-CFLAGS = -I/usr/local/X11/include
+CFLAGS = -I/usr/local/X11/include -I/opt/X11/include
 
-LIBS = -L/usr/X11R6/lib -lX11
+LIBS = -L/usr/X11R6/lib -L/opt/X11/lib -lX11
 
 ## make
 ## make demo

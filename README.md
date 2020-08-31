@@ -1,17 +1,16 @@
 # tv
 
-*An X11 library for LFE Machines, based on Joe Armstrong's implementation of the X11 protocol for Erlang and Lisp Machines' windowing system*
+*An X11 library for LFE Machines*
 
-## Portable
+This library is based on Joe Armstrong's implementation of the X11 protocol for Erlang (and the subsequent work on it done by skvamme). As a nod to LFE's herritage, the project now uses the same name as the Lisp Machines windowing system.
 
-* BQ Aquaris E4.5 with [Ubunty Touch with Mir](doc/Xmir.md) @UBports
-* [Mac OSX](doc/OSX.md)
-* Raspbian on [Raspberry Pi](doc/raspbian.md)
+## Compatibility
 
-## Custom Widgets
+This library is tested against the following:
 
-Draw custom [widgets](doc/dxf2erl.md)
-
+* CI/CD: Ubuntu 16.04 and Erlang 19-23
+* Local development:
+  * Debian 9 (Stretch) and Erlang 23
 
 ## Sources
 

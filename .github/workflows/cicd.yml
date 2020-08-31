@@ -24,10 +24,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build Library
-      run: make lib
+      run: make ex11-lib
     - name: Build Util
-      run: make util
+      run: make ex11-util
     - name: Build Widgets
-      run: make widgeets
+      run: make ex11-widgets
     - name: Build Old Widgets
-      run: make old_widgeets
+      run: make old-widgets

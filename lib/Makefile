@@ -18,32 +18,19 @@ MODS = ex11_lib ex11_lib_driver ex11_lib_read_jpeg ex11_lib_connect\
        ex11_lib_keyboard_driver ex11_lib_rgb ex11_lib_xauth ex11_lib_utils\
        hello_world hello_buttons ex11_lib_xauth
 
-all:  ${MODS:%=%.beam} ex11_lib_read_jpeg
+all: build
+
+build:  ${MODS:%=%.beam} ex11_lib_read_jpeg
 
 test: all
-	erl -pa '../unixdom-0.1/ebin/' -s hello_world start
+	erl -s hello_world start
 
 test1: all
-	erl -pa '../unixdom-0.1/ebin/' -s hello_buttons start
+	erl -s hello_buttons start
 
 ex11_lib_read_jpeg: ex11_lib_read_jpeg.o port_lib.o
 	gcc -o ex11_lib_read_jpeg ex11_lib_read_jpeg.o port_lib.o -ljpeg
 
 clean:
-	rm -f *~ *.beam erl_crash.dump ex11_lib_read_jpeg 
+	rm -f *~ *.beam erl_crash.dump ex11_lib_read_jpeg
 	rm -f ex11_lib_read_jpeg.o port_lib.o
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

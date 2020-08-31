@@ -1,15 +1,15 @@
-all: lib old_widgets util widgets
+all: ex11-lib old-widgets ex11-util ex11-widgets
 
-old_widgets:
+old-widgets:
 	cd old_widgets; make
 
-lib:
+ex11-lib:
 	cd lib; make
 
-util:
+ex11-util:
 	cd util; make
 
-widgets:
+ex11-widgets:
 	cd widgets; make
 
 clean:
@@ -18,4 +18,4 @@ clean:
 	cd util; make clean
 	cd widgets; make clean
 
-PHONY: lib old_widgets util widgets
+PHONEY: all clean

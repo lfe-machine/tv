@@ -20,7 +20,7 @@
 
   <p>EX11  is an Erlang  interface to  X windows.   With EX11  you can
 easily program  complex GUIs.  EX11  models all widgets  as concurrent
-processes - this results in extrememly compact GUI programs which are 
+processes - this results in extrememly compact GUI programs which are
 very simple to program and understand.
 
 <ul>
@@ -35,7 +35,7 @@ very simple to program and understand.
 <h1>Tutorial</h1>
 
 <p>To see how the widget library is called I'll start with a very simple
-example. I'm going to make what looks like a "window". 
+example. I'm going to make what looks like a "window".
 
 <h2>Creating a draggable window</h2>
 <p><img src="fig1.jpg">
@@ -71,9 +71,9 @@ fun(X, Y) ->
      Rectangle ! {setXY, X, Y+16}
 end
 </pre>
-<p>This sends two messages to <tt>Rectangle</tt>. The message 
+<p>This sends two messages to <tt>Rectangle</tt>. The message
 <tt>raise</tt> pops the window to
-the top of the display stack, in case it was obscured. The message 
+the top of the display stack, in case it was obscured. The message
 <tt>{setXY, X, Y}</tt> moves the window to the position <tt>X, Y</tt>.
 
 <p>That's all that's needed - three lines of code.
@@ -116,14 +116,14 @@ loop() ->
 <h2>Creating a shell</h2>
 
 <p><img src="fig2.jpg">
-<p>We can make a shell by combining three primitive widgets. 
+<p>We can make a shell by combining three primitive widgets.
 <a href="#scroll">swScrollbar</a>, <a href="#swText">swText</a> and
 <a href="#swEntry">swEntry</a>.
 <p>The code to do make this looks like this:
 <pre>
 Win   = swTopLevel:make(Display, Width, Ht, ?bg),
-Text  = swText:make(Win, 10, 10, Width-50, Ht-70, ?AntiqueWhite, 
-                    {file, "shell.txt"}),	 
+Text  = swText:make(Win, 10, 10, Width-50, Ht-70, ?AntiqueWhite,
+                    {file, "shell.txt"}),
 Scroll  = swScrollbar:make(Win, Width-30, 10, 20, Max=Ht - 72,0,
 			   ?blue,?white),
 Text  ! {set,100000},
@@ -171,7 +171,7 @@ join(Text, ScrollBar, Max) ->
     A = (MaxLines -  MaxHt)/Max,
     ScrollBar ! {onMove,
 		 fun(I) ->
-			 if 
+			 if
 			     I >= Max ->
 				 Text ! {set, 1000000};
 			     true ->
@@ -221,13 +221,13 @@ Can be used as a container frame.
 </ul>
 
 <a name="swButton"></a>
-<h2>swButton</h2> 
+<h2>swButton</h2>
 <p>A 3-D button.
 <p>Creation:
 <tt>make(Parent, X, Y, Width, Ht, Color, Str)</tt>
 <p>Private protocol:
 <ul>
-<li> <tt>Button ! {onClick, Fun/1}</tt> <br>Evaluate <tt>F(X)</tt> when 
+<li> <tt>Button ! {onClick, Fun/1}</tt> <br>Evaluate <tt>F(X)</tt> when
 clicked.
  <tt>X</tt> is the mouse position.
 <li> <tt>Button ! {set, Str}</tt><br>Change the text in the button
@@ -241,7 +241,7 @@ clicked.
 <tt>make(Parent, X, Y, Width, Height, Border, Color)</tt>
 <p>Private protocol:
 <ul>
-<li> <tt>Entry ! {onMove, F/2}</tt> <br>Evaluate when 
+<li> <tt>Entry ! {onMove, F/2}</tt> <br>Evaluate when
 <tt>F(X,Y)</tt> dragged to
 position <tt>(X,Y)</tt>.
 </ul>
@@ -329,11 +329,11 @@ None - this is merely a container - it dows however, respond to the
 <p>Private protocol:
 <ul>
 
-  <li> 
+  <li>
 <tt>Text !  {set, N}</tt>  <br>Adjust the display so as to skip
 <tt>N</tt> lines  from the top of  the text to be  displayed. Once set
 the   text  widget   will   malways  skip   this   number  of   lines.
-<tt>{set,0}</tt> displays the top of the file. 
+<tt>{set,0}</tt> displays the top of the file.
 
   <p>Setting <tt>N</tt> to a very large number, for example, <tt>{set,
 1000000000}</tt> displays the  end of the file. If  additional data is
@@ -363,13 +363,13 @@ if the mouse is clicked in the window. <tt>X</tt> is the mouse position.
 <p>All widgets should implement the following generic protocol.
 <a href="#2">[2]</a>
 <ul>
-<li><tt>Widget !! display</tt> - 
+<li><tt>Widget !! display</tt> -
 Return the <tt>Pid</tt> of the </tt>Display</tt>.
 
 <li><tt>Widget !! mountPoint</tt> -
 Return the <a href="#1">mount point</a> of the widget.
 
-<li><tt>Widget ! raise</tt> - Raise the widget - ie move it above any other 
+<li><tt>Widget ! raise</tt> - Raise the widget - ie move it above any other
 widgets on the screen.
 
 <li><tt>Widget ! {setXY, X, Y}</tt> -
@@ -384,7 +384,7 @@ Move the widget to <tt>X,Y</tt>.
 <li><tt>Widget ! {narrower, N}</tt>
 <li><tt>Widget ! {taller, N}</tt>
 <li><tt>Widget ! {shorter, N}</tt>
-<li><tt>Widget ! map</tt> 
+<li><tt>Widget ! map</tt>
 <li><tt>Widget ! unmap</tt>
 
 <li><tt>Widget !! winfo</tt> -
@@ -578,13 +578,3 @@ daily (unstable) updates.
 <a name="2"></a>
 <p>
 [2] The generic protocol is implemented in <tt>sw:generic/3</tt>
-
-
-
-
-
-
-
-
-
-

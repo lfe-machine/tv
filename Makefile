@@ -18,4 +18,10 @@ clean:
 	cd util; make clean
 	cd widgets; make clean
 
+docker:
+	@docker build -t lfe-machine .
+
+run-docker:
+	@docker run -p 5900:5900 -e DISPLAY=:0 lfe-machine
+
 PHONEY: all clean

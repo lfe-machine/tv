@@ -1,6 +1,8 @@
 CC = gcc
 CFLAGS = -I/usr/local/X11/include -I/opt/X11/include
 LIBS = -L/usr/X11R6/lib -L/opt/X11/lib -lX11
+SRC = ../../src
+INCL_PATH = ../../
 
 ## make
 ## make demo
@@ -10,7 +12,7 @@ LIBS = -L/usr/X11R6/lib -L/opt/X11/lib -lX11
 .SUFFIXES: .erl .beam .yrl
 
 .erl.beam:
-	erlc -I ../ -W $<
+	erlc -I $(INCL_PATH) -W $<
 
 .yrl.erl:
 	echo "yecc:yecc($*,$*), halt()." | erl
@@ -32,7 +34,7 @@ MODS =  sw swTopLevel swBlinker swButton swCanvas swClock swColorButton \
 # make test - run new experimental tests
 
 all:  ${MODS:%=%.beam} mapdata.bin
-	erl -pa ../src -pa -s example0 start
+	erl -pa $(SRC) -pa -s example0 start
 
 bang: erl_parse.beam
 
@@ -40,19 +42,19 @@ mapdata.bin: mapdata.dat map.beam
 	echo "map:reformat(), erlang:halt(). " | erl
 
 test:  ${MODS:%=%.beam}
-	erl -pa ../src -s sw_tests start
+	erl -pa $(SRC) -s sw_tests start
 
 lifts:  ${MODS:%=%.beam}
-	erl -pa ../src -s lifts start
+	erl -pa $(SRC) -s lifts start
 
 lift_socket_server: ${MODS:%=%.beam}
-	erl -pa ../src -s lift_socket_server start
+	erl -pa $(SRC) -s lift_socket_server start
 
 lift_socket_client: ${MODS:%=%.beam}
-	erl -noshell -pa ../src -s lift_socket_client start
+	erl -noshell -pa $(SRC) -s lift_socket_client start
 
 demo:  ${MODS:%=%.beam}
-	erl -pa ../src -s demo start
+	erl -pa $(SRC) -s demo start
 
 clean:
 	rm -f *~ *.beam erl_crash.dump erl_parse.erl

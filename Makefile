@@ -1,22 +1,22 @@
-all: ex11-lib old-widgets ex11-util ex11-widgets
+all: ex11-lib demo dxf-examples widgets-examples
 
-old-widgets:
-	cd old_widgets; make
+demo:
+	cd examples/demo; make
 
 ex11-lib:
 	cd src; make
 
-ex11-util:
-	cd util; make
+dxf-examples:
+	cd examples/dxf; make
 
-ex11-widgets:
-	cd widgets; make
+widgets-examples:
+	cd examples/widgets; make
 
 clean:
 	cd src; make clean
-	cd old_widgets; make clean
-	cd util; make clean
-	cd widgets; make clean
+	cd examples/demo; make clean
+	cd examples/dxf; make clean
+	cd examples/widgets; make clean
 
 docker:
 	@docker build -t lfe-machine .

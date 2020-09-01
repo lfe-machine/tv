@@ -12,10 +12,10 @@ LIBS = -L/usr/X11R6/lib -L/opt/X11/lib -lX11
 .erl.beam:
 	erlc -I ../ -W $<
 
-MODS = ex11_lib ex11_lib_driver ex11_lib_read_jpeg ex11_lib_connect\
-       ex11_lib_control\
-       ex11_lib_keyboard_driver ex11_lib_rgb ex11_lib_xauth ex11_lib_utils\
-       ex11_lib_xauth
+MODS = ex11_lib ex11_lib_driver ex11_lib_read_jpeg ex11_lib_connect \
+       ex11_lib_control \
+       ex11_lib_keyboard_driver ex11_lib_rgb ex11_lib_xauth ex11_lib_utils \
+       ex11_lib_xauth dxf2erl
 
 all: build
 

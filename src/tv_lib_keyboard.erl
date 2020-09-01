@@ -1,4 +1,4 @@
--module(ex11_lib_keyboard).
+-module(tv_lib_keyboard).
 
 %% Copyright (C) 2004 by Joe Armstrong (joe@sics.se)
 %% All rights reserved.
@@ -96,8 +96,8 @@ classify(false, false, false) -> none.
 map(9)  -> esc;
 map(10) -> {$1,$!};
 map(11) -> {$2,$",$@};
-map(12) -> {$3,$#,$£};
-map(13) -> {$4,$¤,$$};
+map(12) -> {$3,$#,$ï¿½};
+map(13) -> {$4,$ï¿½,$$};
 map(14) -> {$5,$%};
 map(15) -> {$6,$&};
 map(16) -> {$7,$/,${};
@@ -118,7 +118,7 @@ map(30) -> $u;
 map(31) -> $i;
 map(32) -> $o;
 map(33) -> $p;
-map(34) -> $å;
+map(34) -> $ï¿½;
 map(35) -> {$^,$^,$~};
 map(36) -> ret;
 map(37) -> crtl;
@@ -131,9 +131,9 @@ map(43) -> $h;
 map(44) -> $j;
 map(45) -> $k;
 map(46) -> $l;
-map(47) -> $ö;
-map(48) -> $ä;
-map(49) -> {$§,$½};
+map(47) -> $ï¿½;
+map(48) -> $ï¿½;
+map(49) -> {$ï¿½,$ï¿½};
 map(50) -> shift;
 map(51) -> {$',$*};
 map(94) -> {$<,$>,$|};
@@ -180,7 +180,7 @@ map(X)  -> undefined.
 %% ESC F1 .. F12 
 %%  9  67..96
 
-%% §   1  2   <-
+%% ï¿½   1  2   <-
 %% 49  10 11  22
 %% Tab q w w er    ret
 %% 23  24          36 

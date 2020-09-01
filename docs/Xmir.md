@@ -1,6 +1,6 @@
 <h1>Ubuntu Touch/Phone with Mir Display Server</h1>
 
-Erlang ex11 is tested on BQ Aquaris E4.5 Ubuntu Touch Phone @UBports
+Erlang tv is tested on BQ Aquaris E4.5 Ubuntu Touch Phone @UBports
 
 First you have to create an additional root FS on the phone
 ```bash
@@ -31,19 +31,19 @@ cd ..
 rm otp_src_19.2.tar.gz
 exit
 ```
-### Install ex11
+### Install tv
 ```bash
 sudo chroot myRoot/
 cd
 sudo apt-get install git
-git clone https://github.com/skvamme/ex11.git
+git clone https://github.com/skvamme/tv.git
 sudo apt-get install libjpeg8-dev
 apt-get install xauth
 xauth
 add :0 . ab12cd34ef56fe78dc90ba1a2b3c4d5e6f
 #(If there is any chance your system could be hacked, replace at least one of the random characters above)
 exit
-cd ex11
+cd tv
 make
 exit
 ```
@@ -54,10 +54,10 @@ Xmir :0 --desktop_file_hint=/usr/share/applications/unity8.desktop &
 sudo mount --bind /tmp myRoot/tmp
 sudo chroot myRoot/
 cd
-cd ex11
+cd tv
 ```
 
-### Compile ex11 util with:
+### Compile tv util with:
 ```bash
 cd util
 erlc -I ../lib *.erl
@@ -87,7 +87,7 @@ main:start().
 ```bash
 Xmir :0 --desktop_file_hint=/usr/share/applications/unity8.desktop &
 sudo mount --bind /tmp myRoot/tmp
-sudo chroot myRoot/ /bin/bash -c "cd /home/phablet/ex11/util; erl -noshell -pa '../lib' -s clock init"
+sudo chroot myRoot/ /bin/bash -c "cd /home/phablet/tv/util; erl -noshell -pa '../lib' -s clock init"
 ```
 
 ### Create /usr/share/upstart/sessions/erlang.conf and call your new script file

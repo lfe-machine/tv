@@ -7,7 +7,7 @@
 
 -include("include/tv.hrl").
 
--import(ex11_lib, [xDo/2,xPen/3,xClearArea/2,xFlush/1,xColor/2,eFillPoly/5,xCreateSimpleWindow/10,eMapWindow/1,mkPoint/2,xSetScreenSaver/2]).
+-import(tv_lib, [xDo/2,xPen/3,xClearArea/2,xFlush/1,xColor/2,eFillPoly/5,xCreateSimpleWindow/10,eMapWindow/1,mkPoint/2,xSetScreenSaver/2]).
 
 % 0 narrow black % 1 wide black % 2 narrow white % 3 wide white
 make(Parent,Display,PWin,X,Y) -> 

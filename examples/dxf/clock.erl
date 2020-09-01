@@ -7,7 +7,7 @@
 
 -include("include/tv.hrl").
 
--import(ex11_lib, [xDo/2, xFlush/1,rpc/2,xCreateGC/2,xColor/2,mkRectangle/4,xCreateSimpleWindow/7,
+-import(tv_lib, [xDo/2, xFlush/1,rpc/2,xCreateGC/2,xColor/2,mkRectangle/4,xCreateSimpleWindow/7,
     eMapWindow/1,ePolyFillRectangle/3,xCreatePixmap/4,eCopyArea/9,ePolyArc/3,ePolyFillArc/3,
     mkArc/6,mkPoint/2,ePolyLine/4,xSetScreenSaver/2]).
 
@@ -15,7 +15,7 @@
 start() -> spawn(?MODULE,init,[]).
 
 init() ->
-    {ok, Display} = ex11_lib:xStart(":0.0"),
+    {ok, Display} = tv_lib:xStart(":0.0"),
     xSetScreenSaver(Display,0),
     Win = xCreateSimpleWindow(Display,0,0,?WT,?HT,?XC_arrow,xColor(Display,?black)),
     xDo(Display, eMapWindow(Win)),

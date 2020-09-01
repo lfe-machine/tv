@@ -1,4 +1,4 @@
--module(ex11_lib_connect).
+-module(tv_lib_connect).
 
 %% Copyright (C) 2004 by Joe Armstrong (joe@sics.se)
 %% All rights reserved.
@@ -19,21 +19,21 @@
 %%            sockets
 %% 2004-02-15 Added initial support for multiple screens
 %%            Frej Drejhammar <frej@stacken.kth.se>
-%% ex11_connect only handles the connection
+%% tv_connect only handles the connection
 %%   connection is complex - mainly because some large data structures need
 %%   parsing.
 
-%% ex11_driver:start(Host) -> 
+%% tv_driver:start(Host) -> 
 %%    {ok, {Pid,Display}}    if the connection works
 %%    {error, Why} otherwise
 
 %% author: joe@sics.se
 
-%% ex11_connect only handles the connection
+%% tv_connect only handles the connection
 %%   connection is complex - mainly because some large data structures need
 %%   parsing.
 
-%% ex11_lib_connect:start(Host) -> 
+%% tv_lib_connect:start(Host) -> 
 %%    {ok, {Display, Screen, Fd}}    if the connection works
 %%    {error, Why} otherwise
 
@@ -47,14 +47,14 @@
 
 start(Display) ->
   io:format("Trying to open connection with:~s~n",[Display]),
-  case ex11_lib_xauth:read() of
+  case tv_lib_xauth:read() of
     {ok, Xauth} ->
       %% io:format("Xauth~n"),
-      ex11_lib_xauth:print(Xauth),    
+      tv_lib_xauth:print(Xauth),    
       case parse_display(Display) of
         {ok, {Host, DisplayNumber, ScreenNumber}}->
           %% Get all the relevant entries from Xauth
-          Es = ex11_lib_xauth:get_display( Xauth, DisplayNumber), 
+          Es = tv_lib_xauth:get_display( Xauth, DisplayNumber), 
           Es1 = map(fun({X,Y,_}) -> {X,Y} end, Es),
           %% io:format("Start Host=~p Es=~n~p~n",[Host,Es]),
           Try = tryList(Host, DisplayNumber, Es),
@@ -192,9 +192,9 @@ try_to_connect({Host, Display, Cookie}, Screen) ->
   case connect(Host, Display) of
     {ok, Fd} -> 
       io:format("Port opened sending cookie:~n"),
-      Res = send(Fd, ex11_lib:eConnect(Cookie)),
+      Res = send(Fd, tv_lib:eConnect(Cookie)),
       Bin = get_connect_reply(Fd, <<>>),
-      case ex11_lib:pConnect(Bin, Screen) of
+      case tv_lib:pConnect(Bin, Screen) of
         {ok, Dpy} ->
           %% io:format("Display=~p~n",[Dpy]),
           %% ?PRINT_DISPLAY(Dpy),

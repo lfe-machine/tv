@@ -1,7 +1,7 @@
 -module(hello_buttons).
 
 %%% hello_buttons: demonstarates how to make a button widget
-%%  using ex11_lib
+%%  using tv_lib
 %%  To run this program fgive the command
 %%     erl -s hello_buttons start
 
@@ -10,7 +10,7 @@
 %%% Created: 2003-12-29 by joe@sics.se
 
 
--import(ex11_lib, [eMapWindow/1,
+-import(tv_lib, [eMapWindow/1,
 		   ePolyFillRectangle/3,
 		   ePolyLine/4,
 		   ePolyText8/5,

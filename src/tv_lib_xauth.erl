@@ -1,4 +1,4 @@
--module(ex11_lib_xauth).
+-module(tv_lib_xauth).
 
 -author('tnt@home.se').
 %%%---------------------------------------------------------------------
@@ -15,7 +15,7 @@
 %%% the License for the specific language governing rights and limitations
 %%% under the License.
 %%%
-%%% The Original Code is ex11-0-1
+%%% The Original Code is tv-0-1
 %%%
 %%% The Initial Developer of the Original Code is Ericsson Telecom
 %%% AB. Portions created by Ericsson are Copyright (C), 1999, Ericsson
@@ -23,7 +23,7 @@
 %%%
 %%% Contributor(s): ______________________________________.
 %%%
-%%% Origonal Author: Unknown - probably Torbjörn Törnkvist
+%%% Origonal Author: Unknown - probably Torbjï¿½rn Tï¿½rnkvist
 %%% Modified: 23 Feb 1998 by tony@cslab.ericsson.se
 %%%           To make it work under Windows. Added filename/0.
 %%%
@@ -45,7 +45,7 @@
 	 all_cookies/1, get_display/2,
 	 bstr2hstr/1]).
 
-%% -import(ex11_lib_utils,[all/2,first/2,i16/2,split_list/2]).
+%% -import(tv_lib_utils,[all/2,first/2,i16/2,split_list/2]).
 
 -import(lists, [filter/2, map/2, member/2, reverse/1]).
 
@@ -160,7 +160,7 @@ search_unix(Xauth, Display) ->
     remove_duplicates(Cs).
 
 search_ip(Xauth, IP, Display) -> 
-    io:format("ex11_lib_xauth:search_ip IP=~p Display=~p~nXauth=~p~n",
+    io:format("tv_lib_xauth:search_ip IP=~p Display=~p~nXauth=~p~n",
 	      [IP, Display,Xauth]),
     io:format("Family =~p~n",[?FAMILY_IP_ADDRESS]),
     %% 

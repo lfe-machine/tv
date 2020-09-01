@@ -15,7 +15,7 @@
 -export([start/0, start/1]).
 
 -import(sw,       [xStart/0,rpc/2]).
--import(ex11_lib, [eListFonts/2, eSetInputFocus/3, xDo/2, xFlush/1,  
+-import(tv_lib, [eListFonts/2, eSetInputFocus/3, xDo/2, xFlush/1,  
 		   xColor/2, xCreateGC/2, xEnsureFont/2]).
 
 -import(lists,    [duplicate/2,foldl/3,map/2,member/2,reverse/1, 

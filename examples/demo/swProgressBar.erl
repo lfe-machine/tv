@@ -11,7 +11,7 @@
 
 -include("sw.hrl").
 
--import(ex11_lib, [eConfigureWindow/2,
+-import(tv_lib, [eConfigureWindow/2,
 		   eMapWindow/1,
 		   ePolyText8/5, rpc/2, sleep/1, 
 		   xColor/2,

@@ -21,7 +21,7 @@
 
 -compile(export_all).
 
--import(ex11_lib, [eImageText8/5,
+-import(tv_lib, [eImageText8/5,
 		   ePolyText8/5, rpc/2, sleep/1, 
 		   xCreateGC/2,
 		   xColor/2,

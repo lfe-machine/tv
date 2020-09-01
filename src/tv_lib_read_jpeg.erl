@@ -1,4 +1,4 @@
--module(ex11_lib_read_jpeg).
+-module(tv_lib_read_jpeg).
 
 %% Copyright (C) 2004 by Joe Armstrong (joe@sics.se)
 %% All rights reserved.
@@ -18,7 +18,7 @@ dir() ->
     filename:dirname(code:which(?MODULE)).
 
 file(File) ->
-    Port = open_port({spawn,dir() ++ "/ex11_lib_read_jpeg"},
+    Port = open_port({spawn,dir() ++ "/tv_lib_read_jpeg"},
 		     [{packet,2}, binary]),
     case do_command(Port, File ++ [0]) of
 	{data, <<1:8,Width:16,Ht:16>>} ->

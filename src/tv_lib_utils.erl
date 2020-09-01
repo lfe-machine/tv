@@ -1,4 +1,4 @@
--module(ex11_lib_utils).
+-module(tv_lib_utils).
 -author('tnt@home.se').
 %%%---------------------------------------------------------------------
 %%% Created : 15 Feb 1999 by tnt@home.se
@@ -14,7 +14,7 @@
 %%% the License for the specific language governing rights and limitations
 %%% under the License.
 %%%
-%%% The Original Code is ex11-0-1
+%%% The Original Code is tv-0-1
 %%%
 %%% The Initial Developer of the Original Code is Ericsson Telecom
 %%% AB. Portions created by Ericsson are Copyright (C), 1999, Ericsson
@@ -266,13 +266,13 @@ getSize(Num,Pot) ->
 
 mk_rgb() ->
     {ok, F} = file:open("/usr/X11R6/lib/X11/rgb.txt", [read]),
-    {ok, O} = file:open("ex11_lib_rgb.hrl", [write]),
-    {ok, O1} = file:open("ex11_lib_rgb.erl", [write]),
+    {ok, O} = file:open("tv_lib_rgb.hrl", [write]),
+    {ok, O1} = file:open("tv_lib_rgb.erl", [write]),
     io:format(O, "%% derived from /usr/X11R6/lib/X11/rgb.txt~n",[]),
     L = mk_rgb(F, O, []),
     file:close(F),
     file:close(O),
-    io:format(O1, "-module(ex11_lib_rgb).~n", []),
+    io:format(O1, "-module(tv_lib_rgb).~n", []),
     io:format(O1, "%% derived from /usr/X11R6/lib/X11/rgb.txt~n",[]),
     io:format(O1, "-export([colors/0]).~n", []),
     io:format(O1, "colors() -> ~n~p.~n~n",[L]),

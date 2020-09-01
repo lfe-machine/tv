@@ -20,7 +20,7 @@
 
 -compile(export_all).
 
--import(ex11_lib, [eImageText8/5,
+-import(tv_lib, [eImageText8/5,
 		   ePolyFillRectangle/3,
 		   ePolyText8/5, 
 		   mkRectangle/4,

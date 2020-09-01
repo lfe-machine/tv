@@ -9,7 +9,7 @@
 
 -export([make/7]).
 
--import(ex11_lib,[
+-import(tv_lib,[
 		  eConfigureWindow/2,
 		  eMapWindow/1,
 		  reply/2,

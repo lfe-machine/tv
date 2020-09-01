@@ -9,7 +9,7 @@
 
 -export([make/7]).
 
--import(ex11_lib, [xCreateSimpleWindow/10,
+-import(tv_lib, [xCreateSimpleWindow/10,
 		   ePolyText8/5,
 		   rpc/2,
 		   xAddAction/2,

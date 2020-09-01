@@ -11,7 +11,7 @@
 
 -export([make/7]).
 
--import(ex11_lib, [eChangeGC/2,
+-import(tv_lib, [eChangeGC/2,
 		   eConfigureWindow/2,reply/2, ePolyFillRectangle/3,
 		   ePolyText8/5,eUnmapWindow/1,eMapWindow/1,
 		   mkRectangle/4,rpc/2,sleep/1,xCreateGC/2,

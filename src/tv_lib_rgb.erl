@@ -1,4 +1,4 @@
--module(ex11_lib_rgb).
+-module(tv_lib_rgb).
 %% derived from /usr/X11R6/lib/X11/rgb.txt
 -export([colors/0]).
 colors() -> 

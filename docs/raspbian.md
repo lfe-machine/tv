@@ -11,10 +11,10 @@ https://elinux.org/Erlang
 sudo apt-get install xserver-xorg
 ```
 
-## ex11
+## tv
 ```bash
 sudo apt-get install git
-git clone https://github.com/skvamme/ex11.git
+git clone https://github.com/skvamme/tv.git
 sudo apt-get install libjpeg8-dev
 xauth
 add :0 . ab12cd34ef56fe78dc90ba1a2b3c4d5e6f
@@ -24,7 +24,7 @@ exit
 export DISPLAY="localhost:0.0"
 export XAUTHORITY="/home/pi/.Xauthority"
 
-cd ex11
+cd tv
 make
 ```
 ## start Xorg (only on Raspbian Light)

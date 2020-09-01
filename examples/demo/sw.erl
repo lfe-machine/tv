@@ -14,7 +14,7 @@
 	 xStart/0, generic/3,
 	 rpc/2, raised_frame/4, reply/2, sunken_frame/4]).
 
--import(ex11_lib, [eConfigureWindow/2,
+-import(tv_lib, [eConfigureWindow/2,
 		   eMapWindow/1,
 		   ePolyLine/4,
 		   eSetInputFocus/3,
@@ -54,7 +54,7 @@ xyInPixels2cols(X, Y, W, H) ->
     {XX1,YY1}.
 
 xStart() ->
-    case ex11_lib:xStart() of
+    case tv_lib:xStart() of
 	{ok, Display} ->
 	    init(Display),
 	    Display;

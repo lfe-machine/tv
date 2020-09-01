@@ -10,7 +10,7 @@
 -export([start/0]).
 
 -import(sw, [xStart/0]).
--import(ex11_lib, [xDo/2, eGetKeyboardMapping/2]).
+-import(tv_lib, [xDo/2, eGetKeyboardMapping/2]).
 -import(lists, [foreach/2]).
 
 -include("sw.hrl").
@@ -22,7 +22,7 @@ start() ->
 
 win() ->
     Display = xStart(),
-    {First,Last} = K = ex11_lib:get_display(Display, keycodes),
+    {First,Last} = K = tv_lib:get_display(Display, keycodes),
     io:format("K=~p~n",[K]),
     {ok, {keys, Val}} = xDo(Display, eGetKeyboardMapping(First,Last)),
     io:format("Val=~p~n",[Val]),
@@ -43,5 +43,5 @@ f(0) -> "0";
 f(I) when I < 256 ->
     [I];
 f(I) ->
-    ex11_lib_utils:int2hex(I).
+    tv_lib_utils:int2hex(I).
 

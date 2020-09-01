@@ -1,21 +1,21 @@
--module(ex11_lib_keyboard_driver).
+-module(tv_lib_keyboard_driver).
 
 %% Started 2004-01-20 by joe@sics.se (Joe Armstrong)
 
 %% This is done as a global process so that several windows
 %% can share the same keyboard driver.
 
-%% ex11_lib_keyboard_driver:ensure_started(Display) is called
+%% tv_lib_keyboard_driver:ensure_started(Display) is called
 %%   whenever a new X11 session is started
 
 -export([ensure_started/1, analyse/1]).
--import(ex11_lib, [xDo/2, eGetKeyboardMapping/2]).
+-import(tv_lib, [xDo/2, eGetKeyboardMapping/2]).
 -import(lists, [map/2]).
 
 analyse(X) ->
-    ex11_lib_keyboard_driver ! {self(), X},
+    tv_lib_keyboard_driver ! {self(), X},
     receive
-	{ex11_lib_keyboard_driver, Val} ->
+	{tv_lib_keyboard_driver, Val} ->
 	    Val
     end.
 
@@ -23,9 +23,9 @@ ensure_started(Display) ->
     (catch ensure_started1(Display)).
 
 ensure_started1(Display) ->
-    case whereis(ex11_lib_keyboard_driver) of
+    case whereis(tv_lib_keyboard_driver) of
 	undefined ->
-	    register(ex11_lib_keyboard_driver, 
+	    register(tv_lib_keyboard_driver, 
 		     spawn(fun() -> init(Display) end));
 	Pid ->
 	    true
@@ -33,7 +33,7 @@ ensure_started1(Display) ->
 
 init(Display) ->
     %% Ask the display for the Min and Max keycodes
-    {First,Last} = K = ex11_lib:get_display(Display, keycodes),
+    {First,Last} = K = tv_lib:get_display(Display, keycodes),
     io:format("Min,max keycodes=~p,~p~n",[First,Last]),
     %% gte the keycodes
     {ok, {keys, Keys}} = xDo(Display, eGetKeyboardMapping(First,Last)),
@@ -55,13 +55,13 @@ loop(Table, First, Last) ->
 		      true ->
 			  element(Element, S)
 		  end,
-	    From ! {ex11_lib_keyboard_driver, {State,Key,Type,Val}},
+	    From ! {tv_lib_keyboard_driver, {State,Key,Type,Val}},
 	    loop(Table, First, Last);
 	{From, {Key,State}} ->
-	    From ! {ex11_lib_keyboard_driver, {State,Key,error,error}},
+	    From ! {tv_lib_keyboard_driver, {State,Key,error,error}},
 	    loop(Table, First, Last);
 	Other ->
-	    io:format("ex11_lib_keyboard_driver internal error:~p~n",[Other]),
+	    io:format("tv_lib_keyboard_driver internal error:~p~n",[Other]),
 	    loop(Table, First, Last)
     end.
 
@@ -70,7 +70,7 @@ prt(0) -> "0";
 prt(I) when I < 256 ->
     [I];
 prt(I) ->
-    ex11_lib_utils:int2hex(I).
+    tv_lib_utils:int2hex(I).
 
 
 

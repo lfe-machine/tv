@@ -6,7 +6,7 @@
 
 -include("include/tv.hrl").
 
--import(ex11_lib, [ePolyText8/5, rpc/2, sleep/1, xClearArea/1,map/2,eFillPoly/5,eCopyArea/9,
+-import(tv_lib, [ePolyText8/5, rpc/2, sleep/1, xClearArea/1,map/2,eFillPoly/5,eCopyArea/9,
     eConfigureWindow/2,ePolyFillRectangle/3,ePolyLine/4,ePolyRectangle/3,ePolyFillArc/3,
     mkArc/6,ePolyArc/3,mkPoint/2,mkRectangle/4,xClearArea/1,xColor/2,xCreateGC/2,xCreatePixmap/4,
     xDo/2, xFlush/1,xVar/2,ePutImage/9,xCreateSimpleWindow/10,eMapWindow/1]).

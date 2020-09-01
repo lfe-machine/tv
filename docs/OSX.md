@@ -4,9 +4,9 @@ Download XQuartz.app (free from app store). Install it and change in Preferences
 
 Start XQuartz
 
-Compile ex11
+Compile tv
 ```bash
-cd ex11
+cd tv
 make
 ```
 Compile util with:

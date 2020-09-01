@@ -16,7 +16,7 @@
 -export([start/0]).
 
 -import(sw, [xStart/0]).
--import(ex11_lib, [rpc/2]).
+-import(tv_lib, [rpc/2]).
 
 -include("sw.hrl").
 

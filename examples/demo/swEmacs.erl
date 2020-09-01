@@ -18,7 +18,7 @@
 -export([make/7]).
 
 -import(sw, [xStart/0]).
--import(ex11_lib, [rpc/2]).
+-import(tv_lib, [rpc/2]).
 -import(lists, [duplicate/2,foldl/3,reverse/1, reverse/2]).
 
 -import(lib_emacs, [click/3,
@@ -94,7 +94,7 @@ loop(State) ->
 	    display(State1),
 	    loop(State1);
 	{key, Args} -> 
-	    Cmd = ex11_lib_keyboard_driver:analyse(Args),
+	    Cmd = tv_lib_keyboard_driver:analyse(Args),
 	    io:format("Pressed:~p=>~p~n",[Args,Cmd]),
 	    State1 = key_pressed(Cmd, State),
 	    State2 = scroll(State1),

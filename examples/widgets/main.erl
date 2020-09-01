@@ -1,7 +1,7 @@
 -module(main). 
 -author(skvamme).
 -export([start/0,init/0,loop/7]).
--import(ex11_lib,[xColor/2,xCreateSimpleWindow/7,eMapWindow/1,xDo/2,xFlush/1,xSetScreenSaver/2]).
+-import(tv_lib,[xColor/2,xCreateSimpleWindow/7,eMapWindow/1,xDo/2,xFlush/1,xSetScreenSaver/2]).
 
 -include("include/tv.hrl").
 
@@ -12,7 +12,7 @@ start() -> spawn(?MODULE,init,[]).
 
 init() ->
 	Pid = self(),
-	{ok, Display} = ex11_lib:xStart(),
+	{ok, Display} = tv_lib:xStart(),
     xSetScreenSaver(Display,0),
 	Win = xCreateSimpleWindow(Display,0,0,?WT,?HT,?XC_arrow,xColor(Display,?black)),
 	xDo(Display, eMapWindow(Win)),

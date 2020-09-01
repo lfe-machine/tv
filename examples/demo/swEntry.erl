@@ -11,7 +11,7 @@
 
 -include("sw.hrl").
 
--import(ex11_lib,[eCopyArea/9,
+-import(tv_lib,[eCopyArea/9,
 		  eFreeGC/1,
 		  eMapWindow/1,
 		  ePolyFillRectangle/3,
@@ -87,7 +87,7 @@ loop(Display, Wargs, Draw, Data, Fun) ->
 	    loop(Display, Wargs, Draw, Data, Fun);
 	{event, _, keyPress, X} ->
 	    io:format("Here X=~p~n",[X]),
-	    Cmd = ex11_lib_keyboard_driver:analyse(X),
+	    Cmd = tv_lib_keyboard_driver:analyse(X),
 	    #win{win=Entry} = Wargs,
 	    #e{str=Str,n=N,max=Max} = Data,
 	    io:format("Cmd=~p~n",[Cmd]),

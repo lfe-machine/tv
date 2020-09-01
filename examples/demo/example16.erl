@@ -12,7 +12,7 @@
 -include("sw.hrl").
 -define(bg, 16#ffffcc).
 
--import(ex11_lib, [xDo/2,eListFonts/2,
+-import(tv_lib, [xDo/2,eListFonts/2,
 		   rpc/2,
 		   xColor/2,
 		   xCreateGC/2,

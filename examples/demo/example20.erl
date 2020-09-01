@@ -40,7 +40,7 @@ loop(Text) ->
 	    Text ! {blink, X, Y},
 	    loop(Text);
 	{key, Args} -> 
-	    Cmd = ex11_lib_keyboard_driver:analyse(Args),
+	    Cmd = tv_lib_keyboard_driver:analyse(Args),
 	    Str = lists:flatten(io_lib:format("Pressed:~p=>~p",[Args,Cmd])),
 	    Text ! {show,[Str]},
 	    loop(Text);

@@ -1,9 +1,9 @@
-all: ex11-lib demo dxf-examples hello-world widgets-examples
+all: tv-lib examples
 
 demo:
 	cd examples/demo; make
 
-ex11-lib:
+tv-lib:
 	cd src; make
 
 dxf-examples:
@@ -14,6 +14,8 @@ hello-world:
 
 widgets-examples:
 	cd examples/widgets; make
+
+examples: tv-lib hello-world demo dxf-examples
 
 clean:
 	cd src; make clean

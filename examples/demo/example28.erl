@@ -16,7 +16,7 @@
 -export([start/0, start/1]).
 
 -import(sw, [xStart/0]).
--import(ex11_lib, [eListFonts/2,
+-import(tv_lib, [eListFonts/2,
 		   rpc/2, xDo/2
 		  ]).
 -import(lists, [duplicate/2,foldl/3,reverse/1, reverse/2]).
@@ -77,7 +77,7 @@ loop(State) ->
 	    io:format("Clicked:X=~p Y=~p~n", [X,Y]),
 	    loop(State);
 	{key, Args} -> 
-	    Cmd = ex11_lib_keyboard_driver:analyse(Args),
+	    Cmd = tv_lib_keyboard_driver:analyse(Args),
 	    io:format("Pressed:~p=>~p~n",[Args,Cmd]),
 	    State1 = key_pressed(Cmd, State),
 	    loop(State1);

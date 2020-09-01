@@ -14,7 +14,7 @@
 
 -include("sw.hrl").
 
--import(ex11_lib,
+-import(tv_lib,
 	[reply/2, reply/2, rpc/2, get_display/2, get_root_of_screen/2,
 	 xClearArea/2, xColor/2, xCreateGC/3, xDo/2, xFlush/1]).
 

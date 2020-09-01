@@ -7,7 +7,7 @@
 %%% program
 
 
--import(ex11_lib, [eMapWindow/1,
+-import(tv_lib, [eMapWindow/1,
 		   ePolyText8/5,
 		   xAddAction/3,
 		   xCreateGC/2,
@@ -27,7 +27,7 @@ start() ->
     spawn_link(fun() -> init() end).
 
 init() ->
-    {ok, Pid} = ex11_lib:xStart(os:getenv("DISPLAY", ":1.0")),
+    {ok, Pid} = tv_lib:xStart(os:getenv("DISPLAY", ":1.0")),
     Win  = xCreateSimpleWindow(Pid, 10, 10, 300, 100, ?XC_arrow, 
 			       xColor(Pid, ?wheat2)),
     Font = xEnsureFont(Pid, "9x15"),  
@@ -39,8 +39,8 @@ init() ->
     xDo(Pid, Cmd),
     xDo(Pid, eMapWindow(Win)),
     % Hello World + Waving Hand Sign (U+1F44B); Emoji support seems mixed
-    ex11_lib:xSetWMName(Pid, Win, <<"Hello World", 16#F0, 16#9F, 16#91, 16#8B>>),
-    ex11_lib:xSetNormalHints(Pid, Win, [{min_size, 300, 100}, {max_size, 300, 100}]),
+    tv_lib:xSetWMName(Pid, Win, <<"Hello World", 16#F0, 16#9F, 16#91, 16#8B>>),
+    tv_lib:xSetNormalHints(Pid, Win, [{min_size, 300, 100}, {max_size, 300, 100}]),
     xFlush(Pid),
     loop(Pid, Win, Cmd).
 

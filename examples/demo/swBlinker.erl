@@ -11,7 +11,7 @@
 
 -include("sw.hrl").
 
--import(ex11_lib, [
+-import(tv_lib, [
 		   eCopyArea/9,
 		   eFreeGC/1,
 		   ePolyFillRectangle/3,

@@ -1,22 +1,22 @@
 
   +------------------------------------------------------+
   |                                                      |
-  |  ex11 -- the Erlang X11 binding			 |
+  |  tv -- the Erlang X11 binding			 |
   |							 |
   +------------------------------------------------------+
 
 
   Congratulations  - you  have succeeded  in starting  the  X11 Erlang
-graphics system. ex11 is an Erlang binding to the X11 protocol.
+graphics system. tv is an Erlang binding to the X11 protocol.
 
-  Using  the ex11  binding users  can easily  write  advanced graphics
+  Using  the tv  binding users  can easily  write  advanced graphics
 packages which are directly callable from Erlang.
 
-  ex11 is  written almost  entirely in Erlang  (the only  exception to
+  tv is  written almost  entirely in Erlang  (the only  exception to
 this  is  a small  interface  program  which  decodes jpeg  images)  -
 otherwise everything is written in Erlang.
 
-  ex11  implements a  useful subset  of  the X11  protocol. While  not
+  tv  implements a  useful subset  of  the X11  protocol. While  not
 complete  this  subset can  be  used for  writing  a  large number  of
 different graphics programs.
 
@@ -24,12 +24,12 @@ different graphics programs.
 tutorial on graphics programming and a simple widget library.
 
   The widget library contains  code for buttons, sliders, entries etc.
-The  ex11  widget  set  is   easy  to  build  using  the  routines  in
-ex11_lib.erl.  The tutorial describes in  detail how to write a simple
+The  tv  widget  set  is   easy  to  build  using  the  routines  in
+tv_lib.erl.  The tutorial describes in  detail how to write a simple
 "hello  world"   application,  and   follows  this  with   a  detailed
 description of how the button widget works.
 
-  ex11 is  not in any sense  complete. To date  the following problems
+  tv is  not in any sense  complete. To date  the following problems
 have been successfully addressed:
 
      - Font matching and font metric querying

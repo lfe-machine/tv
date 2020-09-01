@@ -16,7 +16,7 @@
 -export([start/0, start/1]).
 
 -import(sw, [xStart/0]).
--import(ex11_lib, [rpc/2]).
+-import(tv_lib, [rpc/2]).
 -import(lists, [foldl/3,reverse/1, reverse/2]).
 
 -include("sw.hrl").
@@ -96,7 +96,7 @@ loop(State) ->
 	    display(State1),
 	    loop(State1);
 	{key, Args} -> 
-	    Cmd = ex11_lib_keyboard_driver:analyse(Args),
+	    Cmd = tv_lib_keyboard_driver:analyse(Args),
 	    io:format("Pressed:~p=>~p~n",[Args,Cmd]),
 	    State1 = key_pressed(Cmd, State),
 	    State2 = scroll(State1),

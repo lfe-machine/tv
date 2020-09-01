@@ -38,7 +38,7 @@
 %% 100117	Bug in entity color fixed (QCAD)							S Kvamme
 
 %****************************************************************************
-% Read dxf file and otput corresponding erlang source for EX11 graphics
+% Read dxf file and otput corresponding erlang source for tv graphics
 %****************************************************************************
 start(Dxf) -> % Dxf is "filename.dxf"
 	Etable = ets:new(entity,[duplicate_bag,private]), % Store all the entities in this table

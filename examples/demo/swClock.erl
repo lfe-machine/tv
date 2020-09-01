@@ -13,7 +13,7 @@
 
 -include("sw.hrl").
 
--import(ex11_lib, [ePolyText8/5, rpc/2, sleep/1, 
+-import(tv_lib, [ePolyText8/5, rpc/2, sleep/1, 
 		   eCopyArea/9,
 		   ePolyFillRectangle/3,
 		   ePolyLine/4,

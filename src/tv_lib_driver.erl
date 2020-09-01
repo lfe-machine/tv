@@ -1,4 +1,4 @@
--module(ex11_lib_driver).
+-module(tv_lib_driver).
 
 %% Copyright (C) 2004 by Joe Armstrong (joe@sics.se)
 %% All rights reserved.
@@ -16,11 +16,11 @@
 %%            Frej Drejhammar <frej@stacken.kth.se>
 %% 2004-01-31 Added code from Luke Gorrie for handling of unix domain
 %%            sockets
-%% ex11_connect only handles the connection
+%% tv_connect only handles the connection
 %%   connection is complex - mainly because some large data structures need
 %%   parsing.
 
-%% ex11_driver:start(Host) -> 
+%% tv_driver:start(Host) -> 
 %%    {ok, {Pid,Display, Screen}}  if the connection works
 %%                                 screen is the screen that was requested at
 %%                                 start
@@ -30,7 +30,7 @@
 -export([start/1, send_cmd/2, new_id/1, get_display/2]).
 
 
--import(ex11_lib, [pError/1, pEvent/1]).
+-import(tv_lib, [pError/1, pEvent/1]).
 -import(lists, [map/2,reverse/1]).
 
 -include("include/tv.hrl").
@@ -52,7 +52,7 @@ start(Display) ->
   process_flag(trap_exit,true),
   S = self(),
   Pid = spawn_link(fun() -> init(S, Display) end),
-  %% io:format("ex11_lib_driver start/1 Pid=~p~n",[Pid]),
+  %% io:format("tv_lib_driver start/1 Pid=~p~n",[Pid]),
   receive 
     {Pid,Ack} -> Ack 
   end.
@@ -62,7 +62,7 @@ return(Pid, Val) ->
 
 init(From, Target) ->
   io:format("init driver Display=~p~n",[Target]),
-  case ex11_lib_connect:start(Target) of
+  case tv_lib_connect:start(Target) of
     {ok, {Display, Screen, Fd}} ->
       %% io:format("Display=~p~n",[Display]),
       %% ?PRINT_DISPLAY(Display),

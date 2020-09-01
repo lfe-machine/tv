@@ -1,14 +1,14 @@
--module(ex11_lib_control).
+-module(tv_lib_control).
 
 %% author: joe@sics.se
 %% 2004-02-15 Added support for multiple screens
 %%            Frej Drejhammar <frej@stacken.kth.se>
 
-%% ex11_connect only handles the connection
+%% tv_connect only handles the connection
 %%   connection is complex - mainly because some large data structures need
 %%   parsing.
 
-%% ex11_connect:start() -> 
+%% tv_connect:start() -> 
 %%    {ok, Pid, Screen}    if the connection works
 %%    {error, Why} otherwise
 
@@ -17,17 +17,17 @@
 -import(lists, [foldl/3, foreach/2, last/1, member/2]).
 
 -import(dict, [new/0, erase/2, fetch/2, store/3, find/2]).
--import(ex11_lib, [eDestroyWindow/1]).
+-import(tv_lib, [eDestroyWindow/1]).
 
 -include("include/tv.hrl").
 
 %% Note most of the RPC routines to this module are defined in
-%% ex11_lib.erl
+%% tv_lib.erl
 
 start(Display) ->
   S = self(),
   Pid = spawn_link(fun() -> init(S, Display) end),
-  %% io:format("ex11_lib_connect start/1 Pid=~p~n",[Pid]),
+  %% io:format("tv_lib_connect start/1 Pid=~p~n",[Pid]),
   receive 
     {Pid, Ack} ->
       Ack
@@ -35,7 +35,7 @@ start(Display) ->
 
 init(From, Target) ->
   process_flag(trap_exit, true),
-  case ex11_lib_driver:start(Target) of
+  case tv_lib_driver:start(Target) of
     {ok, {Driver, Display, Screen}} ->
       %% Screen is the screen we were started with
       %% ie the screen in the DISPLAY variable
@@ -45,12 +45,12 @@ init(From, Target) ->
       %% The next line is horribly wrong
       %% there is not one color fun
       %% but a large number (one for each visual in each screen)
-      ColorFun = ex11_lib_utils:mk_colorfun(Display, Screen),
+      ColorFun = tv_lib_utils:mk_colorfun(Display, Screen),
       DefaultScreen =  Display#display.default_screen,
       DefaultDepth = ?ROOT_DEPTH(Display, DefaultScreen),
       DefaultWin = ?ROOT_ID(Display, DefaultScreen),
-      %% io:format("ex11_lib_control: Screen=~p~n",[Screen]),
-      %% io:format("ex11_lib_control: default Screen=~p~n",
+      %% io:format("tv_lib_control: Screen=~p~n",[Screen]),
+      %% io:format("tv_lib_control: default Screen=~p~n",
       %% [DefaultScreen]),
       DictVals =
       [{color, ColorFun},
@@ -65,10 +65,10 @@ init(From, Target) ->
       ],
       Db0 = dict:from_list(DictVals),
       reply(From, {ok, self(), Screen}),
-      %% io:format("ex11_lib_control DISPLAY==~p~n",[self()]),
-      %% io:format("ex11_lib_control ie DRIVER=~p~n",[Driver]),
+      %% io:format("tv_lib_control DISPLAY==~p~n",[self()]),
+      %% io:format("tv_lib_control ie DRIVER=~p~n",[Driver]),
       %% io:format("Starting a keyboard driver~n"),
-      ex11_lib_keyboard_driver:ensure_started(self()),
+      tv_lib_keyboard_driver:ensure_started(self()),
       loop(From, Driver, 1, Display, Db0, []);
     Error ->
       reply(From, Error)
@@ -94,7 +94,7 @@ sendLocalCmd({cast, Bin}) ->
     self() ! {sendCmd, Bin};
 sendLocalCmd(Other) ->
     io:format("** illegal usage sendLocalCommand ***"),
-    exit({internalError,ex11_lib_connect,sendLocalCmd}).
+    exit({internalError,tv_lib_connect,sendLocalCmd}).
 
 onExit(Pid, D0) ->
     kill_owned_windows(Pid, D0).
@@ -183,8 +183,8 @@ loop(Client, Driver, Seq, Display, D0, FreeIds) ->
 		    reply(From, Id),
 		    loop(Client, Driver, Seq, Display, D0, FreeIds0);
 		[] ->
-		    %% {Id, Display1} = ex11_lib_utils:xalloc_id(Display),
-		    {Id, D1} = ex11_lib_utils:xalloc_id1(D0),
+		    %% {Id, Display1} = tv_lib_utils:xalloc_id(Display),
+		    {Id, D1} = tv_lib_utils:xalloc_id1(D0),
 		    reply(From, Id),
 		    loop(Client, Driver, Seq, Display, D1, FreeIds)
 	    end;
@@ -210,18 +210,18 @@ loop(Client, Driver, Seq, Display, D0, FreeIds) ->
 	    loop(Client, Driver, Seq, Display, D0, FreeIds);
 	{sendCmd, C} ->
 	    %% io:format("Command:~p ~p~n",[Seq,C]),
-	    ex11_lib_driver:send_cmd(Driver, C),
+	    tv_lib_driver:send_cmd(Driver, C),
 	    loop(Client, Driver, Seq+1, Display, D0, FreeIds);
 	{From, {cmd, {call, C, ReplyType}}} ->
 	    %% io:format("I want a reply type ~w to msg:~p~n", 
 	    %% [ReplyType,Seq]),
-	    ex11_lib_driver:send_cmd(Driver, C),
+	    tv_lib_driver:send_cmd(Driver, C),
 	    Driver ! flush,
 	    receive
 		{reply, Seq, R} ->
 		    %% io:format("Reply (~p) was ~p bytes~n",
 		    %% [ReplyType, size(R)]),
-		    Parse = ex11_lib:pReply(ReplyType, R),
+		    Parse = tv_lib:pReply(ReplyType, R),
 		    reply(From, {ok, Parse});
 		{reply, Seq1, R} ->
 		    io:format("Reply with wrong sequence number:~p~n", [Seq1]),
@@ -243,7 +243,7 @@ loop(Client, Driver, Seq, Display, D0, FreeIds) ->
 	    %% io:format("Event:~p~n",[E]),
 	    case dispatchable_type(Type) of
 		true ->
-		    {Win, Parse} = ex11_lib:eParseEvent(Type, B),
+		    {Win, Parse} = tv_lib:eParseEvent(Type, B),
 		    %% io:format("Event:~p Win = ~p data=~p~n",
 		    %% [Type,Win,Parse]),
 		    %% io:format("lookup ~p~n",[{actions,Win,Type}]),
@@ -281,7 +281,7 @@ loop(Client, Driver, Seq, Display, D0, FreeIds) ->
 	    end,
 	    loop(Client, Driver, Seq, Display, D0, FreeIds);
 	X ->
-	    io:format("(ex11_lib_connect ie DRIVER) unexpected message:~p~n",[X]),
+	    io:format("(tv_lib_connect ie DRIVER) unexpected message:~p~n",[X]),
 	    loop(Client, Driver, Seq, Display, D0, FreeIds)
     end.
 

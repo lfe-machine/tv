@@ -1,4 +1,4 @@
 *.beam
 *.o
 startup_error_report
-src/ex11_lib_read_jpeg
+c_src/tv_lib_read_jpeg

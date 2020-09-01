@@ -24,10 +24,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build Library
-      run: make ex11-lib
-    - name: Build Util
-      run: make ex11-util
-    - name: Build Widgets
-      run: make ex11-widgets
-    - name: Build Old Widgets
-      run: make old-widgets
+      run: make tv-lib
+    - name: Build Examples
+      run: make examples
+

@@ -1,4 +1,4 @@
--module(ex11_lib).
+-module(tv_lib).
 
 %% Copyright (C) 2003, 2004 by Joe Armstrong (joe@sics.se)
 %% All rights reserved.
@@ -105,7 +105,7 @@
 
 -import(lists, [reverse/1, reverse/2]).
 
--import(ex11_lib_utils, [i2h/1]).
+-import(tv_lib_utils, [i2h/1]).
 
 -import(lists, [map/2, member/2]).
 
@@ -115,14 +115,14 @@
 
 -include("include/tv.hrl").
 
-colors() -> ex11_lib_rgb:colors().
+colors() -> tv_lib_rgb:colors().
 
 xStart() ->
   xStart(os:getenv("DISPLAY", ":0.0")).
 xStart(Display) ->
-  case ex11_lib_control:start(Display) of
+  case tv_lib_control:start(Display) of
     {ok, Pid, Screen} ->
-      put(ex11Pid, Pid),
+      put(tvPid, Pid),
       init(Pid, Screen),
       {ok, Pid};
     Error ->

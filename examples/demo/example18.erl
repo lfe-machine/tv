@@ -14,7 +14,7 @@
 
 -export([start/0]).
 
--import(ex11_lib,[colors/0]).
+-import(tv_lib,[colors/0]).
 -import(lists, [map/2,reverse/1,seq/2]).
 -import(sw, [xStart/0]).
 -include("sw.hrl").

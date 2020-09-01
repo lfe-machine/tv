@@ -66,7 +66,7 @@ edit(Display, Wc, Hc, Str) ->
     S = self(),
     Text ! {onClick, fun(X) -> S ! {click, X} end},
     Text ! {onKey, fun(X) -> 
-			   Cmd = ex11_lib_keyboard_driver:analyse(X),
+			   Cmd = tv_lib_keyboard_driver:analyse(X),
 			   S ! {key, Cmd} 
 		   end},
     B1 = [],

@@ -4,9 +4,14 @@ touch /root/.Xauthority
 xauth generate :0 . trusted
 xauth add ${HOST}:0 . $(xxd -l 16 -p /dev/urandom)
 
+xsetroot -name "lisp-machine"
+xsetroot -mod 2 4 &
+xsetroot -cursor_name crosshair &
 xterm -geometry 118x32+10+10 -ls -title "LFE MACHINE" &
 xterm -geometry 118x32+736+10 -ls -title "LFE MACHINE" &
 xterm -geometry 72x32+1462+10 -ls -title "LFE MACHINE" &
+xterm -geometry 193x27+736-284 -fg seagreen -bg black -title "LFE MACHINE EDITOR" \
+  -e emacs & 
 xterm -geometry 193x20+736-10 -fg seagreen -bg black -title "LFE MACHINE REPL" \
   -e "lfe -pa /opt/erlang/lfe-machine/tv/lib" & 
 

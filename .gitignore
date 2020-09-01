@@ -1,4 +1,4 @@
 *.beam
 *.o
 startup_error_report
-lib/ex11_lib_read_jpeg
+src/ex11_lib_read_jpeg

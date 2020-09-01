@@ -1,8 +1,8 @@
 all: build
 
 build:
-	erlc -I ../lib *.erl
-	erl -pa '../lib'
+	erlc -I ../src *.erl
+	erl -pa ../src
 
 clean:
 	rm -f *~ *.beam erl_crash.dump

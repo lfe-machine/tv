@@ -4,7 +4,7 @@ old-widgets:
 	cd old_widgets; make
 
 ex11-lib:
-	cd lib; make
+	cd src; make
 
 ex11-util:
 	cd util; make
@@ -13,7 +13,7 @@ ex11-widgets:
 	cd widgets; make
 
 clean:
-	cd lib; make clean
+	cd src; make clean
 	cd old_widgets; make clean
 	cd util; make clean
 	cd widgets; make clean

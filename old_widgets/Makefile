@@ -1,7 +1,6 @@
 CC = gcc
-CFLAGS = -I/usr/local/X11/include
-
-LIBS = -L/usr/X11R6/lib -lX11
+CFLAGS = -I/usr/local/X11/include -I/opt/X11/include
+LIBS = -L/usr/X11R6/lib -L/opt/X11/lib -lX11
 
 ## make
 ## make demo
@@ -33,7 +32,7 @@ MODS =  sw swTopLevel swBlinker swButton swCanvas swClock swColorButton \
 # make test - run new experimental tests
 
 all:  ${MODS:%=%.beam} mapdata.bin
-	erl -pa '../lib' -pa '../unixdom-0.1/ebin/' -s example0 start
+	erl -pa ../src -pa -s example0 start
 
 bang: erl_parse.beam
 
@@ -41,19 +40,19 @@ mapdata.bin: mapdata.dat map.beam
 	echo "map:reformat(), erlang:halt(). " | erl
 
 test:  ${MODS:%=%.beam}
-	erl -pa '../lib' -s sw_tests start
+	erl -pa ../src -s sw_tests start
 
 lifts:  ${MODS:%=%.beam}
-	erl -pa '../lib' -s lifts start
+	erl -pa ../src -s lifts start
 
 lift_socket_server: ${MODS:%=%.beam}
-	erl -pa '../lib' -s lift_socket_server start
+	erl -pa ../src -s lift_socket_server start
 
 lift_socket_client: ${MODS:%=%.beam}
-	erl -noshell -pa '../lib' -s lift_socket_client start
+	erl -noshell -pa ../src -s lift_socket_client start
 
 demo:  ${MODS:%=%.beam}
-	erl -pa '../lib' -s demo start
+	erl -pa ../src -s demo start
 
 clean:
 	rm -f *~ *.beam erl_crash.dump erl_parse.erl

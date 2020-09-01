@@ -4,7 +4,9 @@
 -define (WT,400).
 -define (HT,200).
 -define (SPACE,2). % width of thin bar. Thick bar is 3 * thin bar (can be 2 to 3)
--include("ex11_lib.hrl").
+
+-include("include/tv.hrl").
+
 -import(ex11_lib, [xDo/2,xPen/3,xClearArea/2,xFlush/1,xColor/2,eFillPoly/5,xCreateSimpleWindow/10,eMapWindow/1,mkPoint/2,xSetScreenSaver/2]).
 
 % 0 narrow black % 1 wide black % 2 narrow white % 3 wide white

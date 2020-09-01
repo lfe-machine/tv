@@ -1,7 +1,7 @@
 all: build
 
 build:
-	erlc -I ../src *.erl
+	erlc -I ../ *.erl
 	erl -pa ../src
 
 clean:

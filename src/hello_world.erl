@@ -21,7 +21,7 @@
 
 -export([start/0]).
 
--include("ex11_lib.hrl").
+-include("include/tv.hrl").
 
 start() -> 
     spawn_link(fun() -> init() end).

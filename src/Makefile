@@ -1,6 +1,5 @@
 CC = gcc
 CFLAGS = -I/usr/local/X11/include -I/opt/X11/include
-
 LIBS = -L/usr/X11R6/lib -L/opt/X11/lib -lX11
 
 ## make
@@ -11,7 +10,7 @@ LIBS = -L/usr/X11R6/lib -L/opt/X11/lib -lX11
 .SUFFIXES: .erl .beam
 
 .erl.beam:
-	erlc -W $<
+	erlc -I ../ -W $<
 
 MODS = ex11_lib ex11_lib_driver ex11_lib_read_jpeg ex11_lib_connect\
        ex11_lib_control\

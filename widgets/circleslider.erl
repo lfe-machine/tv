@@ -3,7 +3,9 @@
 -export([make/5,init/5,loop/7]).
 -define (WT,340).
 -define (HT,340).
--include("ex11_lib.hrl").
+
+-include("include/tv.hrl").
+
 -import(ex11_lib, [xColor/2,xCreateSimpleWindow/10,eMapWindow/1,xDo/2,xFlush/1,
     xCreateGC/2,ePolyArc/3,mkArc/6,eListFonts/2]).
 

@@ -5,7 +5,9 @@
 -define (HT,480).
 -define (DELTA,10). % X-Distance between visible points
 -define (COUNT,60). % Max Number of visible points
--include("ex11_lib.hrl").
+
+-include("include/tv.hrl").
+
 -import(ex11_lib, [xColor/2,xCreateSimpleWindow/10,xClearArea/2,mkArc/6,eFillPoly/5,ePolyFillArc/3,eMapWindow/1,xDo/2,xFlush/1,xCreateGC/2,
     ePolyLine/4,mkPoint/2,xClearArea/2]).
 

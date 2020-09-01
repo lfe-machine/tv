@@ -10,7 +10,7 @@ LIBS = -L/usr/X11R6/lib -L/opt/X11/lib -lX11
 .SUFFIXES: .erl .beam .yrl
 
 .erl.beam:
-	erlc -W $<
+	erlc -I ../ -W $<
 
 .yrl.erl:
 	echo "yecc:yecc($*,$*), halt()." | erl

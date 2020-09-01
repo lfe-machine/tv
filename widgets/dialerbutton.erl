@@ -3,7 +3,9 @@
 -export([make/6,init/6,loop/8]).
 -define (WT,150).
 -define (HT,150).
--include("ex11_lib.hrl").
+
+-include("include/tv.hrl").
+
 -import(ex11_lib, [ePolyText8/5, rpc/2, sleep/1, xClearArea/1,map/2,eFillPoly/5,eCopyArea/9,
     eConfigureWindow/2,ePolyFillRectangle/3,ePolyLine/4,ePolyRectangle/3,ePolyFillArc/3,
     mkArc/6,ePolyArc/3,mkPoint/2,mkRectangle/4,xClearArea/1,xColor/2,xCreateGC/2,xCreatePixmap/4,

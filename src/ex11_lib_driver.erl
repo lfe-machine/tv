@@ -33,7 +33,7 @@
 -import(ex11_lib, [pError/1, pEvent/1]).
 -import(lists, [map/2,reverse/1]).
 
--include("ex11_lib.hrl").
+-include("include/tv.hrl").
 
 new_id(Pid) -> rpc(Pid, create_id).
     

@@ -19,7 +19,7 @@
 -import(dict, [new/0, erase/2, fetch/2, store/3, find/2]).
 -import(ex11_lib, [eDestroyWindow/1]).
 
--include("ex11_lib.hrl").
+-include("include/tv.hrl").
 
 %% Note most of the RPC routines to this module are defined in
 %% ex11_lib.erl

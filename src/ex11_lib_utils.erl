@@ -20,7 +20,7 @@
 %%% AB. Portions created by Ericsson are Copyright (C), 1999, Ericsson
 %%% Telecom AB. All Rights Reserved.
 %%% Origonal Author:
-%%    Unknown - probably Torbjörn Törnvkist or Tony Rogvall
+%%    Unknown - probably Torbjï¿½rn Tï¿½rnvkist or Tony Rogvall
 %%% Contributor(s):
 %%%   Joe Armstrong   <joe@sics.se>
 %%%   Frej Drejhammar <frej@stacken.kth.se> (bugfix in mk_colorfun).
@@ -35,7 +35,7 @@
 -import(lists,[reverse/1]).
 
 
--include("ex11_lib.hrl").
+-include("include/tv.hrl").
 
 %% ---------------
 %% Misc. routines

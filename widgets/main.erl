@@ -2,7 +2,9 @@
 -author(skvamme).
 -export([start/0,init/0,loop/7]).
 -import(ex11_lib,[xColor/2,xCreateSimpleWindow/7,eMapWindow/1,xDo/2,xFlush/1,xSetScreenSaver/2]).
--include("ex11_lib.hrl").
+
+-include("include/tv.hrl").
+
 -define(WT,800).
 -define(HT,480).
 

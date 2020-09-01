@@ -113,7 +113,7 @@
 
 %% commands
 
--include("ex11_lib.hrl").
+-include("include/tv.hrl").
 
 colors() -> ex11_lib_rgb:colors().
 

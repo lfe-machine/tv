@@ -24,4 +24,7 @@ docker:
 run-docker:
 	@docker run -p 5900:5900 -e DISPLAY=:0 lfe-machine
 
+bash-docker:
+	@docker run -it --entrypoint=bash lfe-machine
+
 PHONEY: all clean

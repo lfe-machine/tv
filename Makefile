@@ -32,7 +32,7 @@ bash-docker:
 	@docker run -it --entrypoint=bash lfe-machine
 
 clean-docker:
-	@docker images clean
-	@docker volume rm $(docker volume ls -qf dangling=true)
+	-@docker images prune
+	-@docker volume rm $(docker volume ls -qf dangling=true)
 
 PHONEY: all clean

@@ -19,7 +19,7 @@ MODS = ex11_lib ex11_lib_driver ex11_lib_read_jpeg ex11_lib_connect \
 
 all: build
 
-build:  ${MODS:%=%.beam} ex11_lib_read_jpeg
+build: ${MODS:%=%.beam} ex11_lib_read_jpeg
 
 test: all
 	erl -s hello_world start
@@ -27,8 +27,8 @@ test: all
 test1: all
 	erl -s hello_buttons start
 
-ex11_lib_read_jpeg: ex11_lib_read_jpeg.o port_lib.o
-	gcc -o ex11_lib_read_jpeg ex11_lib_read_jpeg.o port_lib.o -ljpeg
+ex11_lib_read_jpeg:
+	cd ../c_src && make
 
 clean:
 	rm -f *~ *.beam erl_crash.dump ex11_lib_read_jpeg

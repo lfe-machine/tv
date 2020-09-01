@@ -17,6 +17,6 @@ COPY --from=builder /tmp/tv /opt/erlang/lfe-machine/tv
 COPY priv/docker/xterm /root/xterm
 COPY priv/docker/emacs.el /root/.emacs
 
-RUN apk add xsetroot xev kbd make emacs-nox
+RUN apk add xsetroot xev kbd make emacs-nox ca-certificates
 
 WORKDIR /opt/erlang/lfe-machine/tv

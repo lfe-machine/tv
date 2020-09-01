@@ -33,7 +33,11 @@ MODS =  sw swTopLevel swBlinker swButton swCanvas swClock swColorButton \
 # make      - build and run the stable demo
 # make test - run new experimental tests
 
-all:  ${MODS:%=%.beam} mapdata.bin
+build: ${MODS:%=%.beam} mapdata.bin
+
+all: build
+
+run: build
 	erl -pa $(SRC) -pa -s example0 start
 
 bang: erl_parse.beam
@@ -41,19 +45,19 @@ bang: erl_parse.beam
 mapdata.bin: mapdata.dat map.beam
 	echo "map:reformat(), erlang:halt(). " | erl
 
-test:  ${MODS:%=%.beam}
+test: build
 	erl -pa $(SRC) -s sw_tests start
 
-lifts:  ${MODS:%=%.beam}
+lifts: build
 	erl -pa $(SRC) -s lifts start
 
-lift_socket_server: ${MODS:%=%.beam}
+lift_socket_server: build
 	erl -pa $(SRC) -s lift_socket_server start
 
-lift_socket_client: ${MODS:%=%.beam}
+lift_socket_client: build
 	erl -noshell -pa $(SRC) -s lift_socket_client start
 
-demo:  ${MODS:%=%.beam}
+demo: build
 	erl -pa $(SRC) -s demo start
 
 clean:

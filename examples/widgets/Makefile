@@ -5,6 +5,8 @@ all: build
 
 build:
 	erlc -I $(INCL_PATH) *.erl
+
+run:
 	erl -pa $(SRC)
 
 clean:

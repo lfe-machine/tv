@@ -1,4 +1,4 @@
-all: ex11-lib demo dxf-examples widgets-examples
+all: ex11-lib demo dxf-examples hello-world widgets-examples
 
 demo:
 	cd examples/demo; make
@@ -9,6 +9,9 @@ ex11-lib:
 dxf-examples:
 	cd examples/dxf; make
 
+hello-world:
+	cd examples/hello-world; make
+
 widgets-examples:
 	cd examples/widgets; make
 
@@ -16,6 +19,7 @@ clean:
 	cd src; make clean
 	cd examples/demo; make clean
 	cd examples/dxf; make clean
+	cd examples/hello-world; make clean
 	cd examples/widgets; make clean
 
 docker:
@@ -26,5 +30,9 @@ run-docker:
 
 bash-docker:
 	@docker run -it --entrypoint=bash lfe-machine
+
+clean-docker:
+	@docker images clean
+	@docker volume rm $(docker volume ls -qf dangling=true)
 
 PHONEY: all clean

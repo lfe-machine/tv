@@ -1,0 +1,31 @@
+%% -*- erlang -*-
+{application, tv,
+ [
+  {description, "An X11 library for LFE Machines"},
+
+  {vsn, "3.0.0-dev"},
+
+  {modules,
+   []},
+
+  {registered, []},
+
+  {applications,
+   [
+    kernel,
+    stdlib
+   ]},
+
+  {included_applications, []},
+
+  {env, []},
+
+  %% Hex.pm metadata
+  {pkg_name, tv},
+  {maintainers, ["Duncan McGreggor"]},
+  {licenses, ["ErlPL-1.1"]},
+  {links,
+   [{"GitHub", "https://github.com/lfe-machine/tv"}
+   ]}
+ ]
+}.

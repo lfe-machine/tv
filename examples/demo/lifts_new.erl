@@ -251,15 +251,15 @@ time_to_close_door({opened,N})   -> (108 - N) * velocity_door().
 insert(Dirn, N, Pos, Stop) ->
     insert(Dirn, N, Pos, [], Stop).
 
-insert(Dirn, N, Pos, B, []) ->
-    reverse([N|B]);
-insert(Dirn, N, Pos, B, [N|A]) ->
-    reverse(B, [N|A]);
-insert(Dirn, N, N, B, [Next|A]) ->
-    reverse(B, [Next|A]);
+insert(_Dirn, N, _Pos, B, []) ->
+    lists:reverse([N|B]);
+insert(_Dirn, N, _Pos, B, [N|A]) ->
+    lists:reverse(B, [N|A]);
+insert(_Dirn, N, N, B, [Next|A]) ->
+    lists:reverse(B, [Next|A]);
 insert(up, N, Pos, B, [Next|A]) when  Pos < N, N < Next ->
-    reverse(B, [N,Next|A]);
+    lists:reverse(B, [N,Next|A]);
 insert(down, N, Pos, B, [Next|A]) when Next < N, N < Pos ->
-    reverse(B, [N,Next|A]);
-insert(Dirn, N, Pos, B, [Next|A]) ->
+    lists:reverse(B, [N,Next|A]);
+insert(Dirn, N, _Pos, B, [Next|A]) ->
     insert(Dirn, N, Next, [Next|B],A).

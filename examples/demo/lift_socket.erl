@@ -1,7 +1,7 @@
 -module(lift_socket).
 
 -compile(export_all).
--export([autostart/2]).
+-export([start/1]).
 
 -import(lists, [foreach/2, member/2]).
 -import(misc_utils, [rpc/2, reply/2, make_server/2]).
@@ -53,14 +53,14 @@ format_event({click,floor,N,down}) -> [$F, N+$0, $D,$\n];
 format_event({click,floor,N,M}) -> [$B, N+$0, M+$0,$\n].
 
 handle([$\n|T], L, Pid) ->
-    do_cmd(reverse(L), Pid),
-    handle(T, []);
+    do_cmd(lists:reverse(L), Pid),
+    handle(T, L, []);
 handle([H|T], L, Pid) ->
     handle(T, [H|L], Pid);
-handle([], L, Pid) ->
+handle([], L, _Pid) ->
     L.
 
-do_cmd(Cmd, Pid) ->
+do_cmd(Cmd, _Pid) ->
     io:format("Do cmd:~p~n",[Cmd]),
     true.
 

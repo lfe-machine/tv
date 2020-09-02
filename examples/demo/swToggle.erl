@@ -9,7 +9,7 @@
 
 %%% Create: 2004-01-01 by joe@sics.se
 
--export([make/9]).
+-export([make/8]).
 
 -import(tv_lib, [eChangeGC/2,
 		   eConfigureWindow/2,reply/2, ePolyFillRectangle/3,
@@ -23,7 +23,7 @@
 %%  State = {Fun,Expose,In}
 
 make(Parent, X, Y, Width, Ht, Border, C1, C2) ->
-    spawn_link(fun() -> init(Parent, X, Y, Width, Ht, Border, C1, C2) 
+    spawn_link(fun() -> init(Parent, X, Y, Width, Ht, Border, C1, C2, "") 
 	       end).
 
 init(Parent, X, Y, Width, Ht, Border, C1, C2, Str) ->

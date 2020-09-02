@@ -1,4 +1,4 @@
--module(lifts).
+-module(lift_controller).
 
 -compiler(export_all).
 
@@ -41,10 +41,11 @@ top_floor(Floor, Lifts) ->
         receive 
             {Floor, UpDown} ->
                 reserve_lift(Lifts, UpDown, Floor),
-                light_lamp(Floor, UpDown),
+                % light_lamp(Floor, UpDown),
                 top_floor(Floor, Lifts);
-            {A_lift, arrived, GoingUpOrDown} ->
-                   extingush_lamp(Floor, GoingUpOrDown)
+            {_A_lift, arrived, _GoingUpOrDown} ->
+                %    extingush_lamp(Floor, GoingUpOrDown)
+                {}
         end.
 
 top_lift(Lift, State) ->
@@ -53,7 +54,7 @@ top_lift(Lift, State) ->
                 trye;
             {Id , how_long, Floor, Dirn} ->
                 {Doing,Now,Stop} = State,
-                T = wait_time(Dirn, Floor, Now, Stop),
+                T = wait_time(Dirn, Floor, Now, Stop, []),
                 Id ! T,
                 receive 
                     {Id, commit} ->
@@ -112,7 +113,7 @@ stop_at_1(Floor, Before, [H|T]) ->
 top_lift1(Lift, State) ->
         receive 
             {Sys, stop, Time, Floor} ->
-                format("~w lift:~w stop at:~w~n", [Time,Lift,Floor]),
+                io:format("~w lift:~w stop at:~w~n", [Time,Lift,Floor]),
                 {Doing,Now,Stop} = State,
                 Stop1 = stop_at(Floor, Now, Stop),
                 State1 = {Doing,Now,Stop1},

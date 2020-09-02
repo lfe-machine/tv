@@ -5,8 +5,9 @@ FROM lfex/lfe-x11:1.3-23.0-alpine AS builder
 
 ADD . /tmp/tv
 WORKDIR /tmp/tv
-RUN apk add --update make gcc libc-dev libjpeg jpeg-dev
-RUN make
+RUN apk add --update git make gcc libc-dev libjpeg jpeg-dev
+RUN rebar3 compile
+RUN rebar3 as examples compile
 
 #############################################################################
 ###   Build Phase   #########################################################

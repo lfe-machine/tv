@@ -2,3 +2,4 @@
 *.o
 startup_error_report
 c_src/tv_lib_read_jpeg
+_build

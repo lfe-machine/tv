@@ -6,7 +6,7 @@
 
 *An X11 library for LFE Machines*
 
-This library is based on Joe Armstrong's implementation of the X11 protocol for Erlang (and the subsequent work on it done by skvamme). As a nod to LFE's herritage, the project now uses the same name as the Lisp Machines windowing system.
+This library is based on Joe Armstrong's implementation of the X11 protocol for Erlang (and the subsequent work on it done by skvamme). As a nod to LFE's herritage, the project now uses the same name as the Lisp Machine windowing system.
 
 ## Compatibility
 

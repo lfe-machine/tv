@@ -19,6 +19,7 @@ examples: tv-lib hello-world demo dxf-examples
 
 clean:
 	cd src; make clean
+	cd c_src; make clean
 	cd examples/demo; make clean
 	cd examples/dxf; make clean
 	cd examples/hello-world; make clean
